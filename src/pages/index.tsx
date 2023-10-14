@@ -15,12 +15,12 @@ export default function Home() {
       <div>Hello world</div>
       {user ? (
         <>
-          <div>You're logged in as: {user.displayName}</div>
+          <div>You&apos;re logged in as: {user.displayName}</div>
           <button onClick={logout}>LOGOUT</button>
         </>
       ) : (
         <>
-          <div>You're not logged in.</div>
+          <div>You&apos;re not logged in.</div>
           <button onClick={login}>LOGIN</button>
         </>
       )}
