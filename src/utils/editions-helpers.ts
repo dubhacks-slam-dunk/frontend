@@ -1,5 +1,5 @@
 import { Edition } from '@/types/Edition';
-import { addDoc, collection, getDocs } from 'firebase/firestore';
+import { addDoc, collection } from 'firebase/firestore';
 import { db } from './firebase';
 
 const editionsRef = collection(db, 'editions');
@@ -22,6 +22,7 @@ export async function addEdition(edition: Edition) {
       signOff: signOff,
     });
     console.log('Edition Document written with ID: ', docRef.id);
+    return docRef.id;
   } catch (e) {
     console.error('Error adding document: ', e);
   }
