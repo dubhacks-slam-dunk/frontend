@@ -1,13 +1,19 @@
 import { Flex, Text, AspectRatio } from '@radix-ui/themes';
 import Image from 'next/image';
 
-export default function GroupCard() {
+export default function GroupCard(props: any) {
   return (
     <div>
-      <Flex direction="column" gap="1" align="center">
-        <Image src="/images/expawdition.png" alt="expawdition"></Image>
-        <Text>group name</Text>
-        <Text>OCT 10, 2023</Text>
+      <Flex direction="column" className=" mx-auto">
+        <Image
+          className="rounded-md"
+          src={props.image}
+          alt={props.name}
+          width="500"
+          height="10"
+        ></Image>
+        <Text className="font-dm">group name</Text>
+        <Text className="font-orelega">last updated {props.date}</Text>
       </Flex>
     </div>
   );
