@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { ChevronLeftIcon } from '@radix-ui/react-icons';
 import { useState } from 'react';
+import BottomNavbar from '@/components/BottomNavbar';
 
 export default function Invite(props: any) {
   const [isCopied, setIsCopied] = useState(false);
@@ -24,7 +25,7 @@ export default function Invite(props: any) {
   };
 
   return (
-    <div>
+    <div className="pb-20">
       <Flex
         direction="column"
         className="w-11/12 mx-auto mt-12 mb-12 h-screen flex-col justify-between"
@@ -54,6 +55,8 @@ export default function Invite(props: any) {
           </Button>
         </Flex>
       </Flex>
+
+      <BottomNavbar />
     </div>
   );
 }
