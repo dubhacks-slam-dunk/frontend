@@ -35,7 +35,11 @@ export default function Group(props: any) {
         <Button>invite</Button>
         <Button>Write my update</Button>
         <Text>latest edition</Text>
-        <EditionCard></EditionCard>
+        <EditionCard
+          date="" // date of edition
+          title="" // title of edition
+          photoentrylist="" // list of photo entries
+        ></EditionCard>
         <Text>archives</Text>
       </Flex>
     </div>
