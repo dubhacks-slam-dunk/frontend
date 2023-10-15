@@ -1,8 +1,10 @@
-import { Flex, Text, AspectRatio } from '@radix-ui/themes';
-import Image from 'next/image';
 import PhotoEntry from '@/types/PhotoEntry';
+import { Flex, Text } from '@radix-ui/themes';
+import Image from 'next/image';
 
 export default function HomeEditionCard(props: any) {
+  console.log(props);
+
   return (
     <div>
       <Flex direction="column" className="mx-auto">

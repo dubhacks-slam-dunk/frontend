@@ -1,10 +1,49 @@
-import { Flex, Text, Button } from '@radix-ui/themes';
-import Image from 'next/image';
-import HomeGroupCard from './HomeGroupCard';
 import { Group } from '@/types/Group';
+import { getEditionsByEditionId } from '@/utils/editions-helpers';
+import { auth } from '@/utils/firebase';
+import { getAllGroupsById } from '@/utils/groups-helpers';
+import { getGroupIdsFromUser, getUserIdFromUid } from '@/utils/users-helpers';
+import { Flex, Text } from '@radix-ui/themes';
+import Image from 'next/image';
+import { useEffect, useState } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
 import HomeEditionCard from './HomeEditionCard';
+import HomeGroupCard from './HomeGroupCard';
 
 export default function HomeComponent(props: any) {
+  const [user, loading, error] = useAuthState(auth);
+  // const { user } = useAuth();
+  const [groups, setGroups] = useState<any>([]);
+  const [editions, setEditions] = useState<any>([]);
+
+  useEffect(() => {
+    const fetchGroups = async () => {
+      const userId = await getUserIdFromUid(user?.uid as string);
+      const groupIds = await getGroupIdsFromUser(userId);
+
+      const groupsData: any = await getAllGroupsById(groupIds);
+
+      const tempEditions: any = [];
+      for (const groupData of groupsData) {
+        console.log(groupData);
+
+        const editionIds = groupData.data.editions;
+        console.log(editionIds);
+
+        const editionsData = await getEditionsByEditionId(editionIds);
+        tempEditions.push(editionsData);
+        console.log(tempEditions);
+      }
+      setGroups(groupsData);
+      setEditions(tempEditions);
+      console.log(editions);
+    };
+
+    if (user) {
+      fetchGroups();
+    }
+  }, []);
+
   const grouplist: Group[] = []; // CHANGE TO DYNAMIC DATA
   return (
     <div>
@@ -26,22 +65,29 @@ export default function HomeComponent(props: any) {
             time to update!
           </Text>
           <Flex direction="row" className="flex flex-row space-x-4 overflow-x-auto">
-            {/* {grouplist &&
-              grouplist.map((group: Group, index: number) => (
-                <HomeGroupCard key={index} name={group.name} image={group.image} className="min-w-0"></HomeGroupCard>
-              ))} */}
+            {groups &&
+              groups.map((group: any, index: number) => {
+                return (
+                  <HomeGroupCard
+                    key={index}
+                    name={group.data.name}
+                    image={group.data.image}
+                    className="min-w-0"
+                  ></HomeGroupCard>
+                );
+              })}
             <HomeGroupCard
-              name="test"
+              name="expawdition"
               image="/images/expawdition.png"
               className="min-w-0"
             ></HomeGroupCard>
             <HomeGroupCard
-              name="test"
+              name="HTN and friends"
               image="/images/expawdition.png"
               className="min-w-0"
             ></HomeGroupCard>
             <HomeGroupCard
-              name="test"
+              name="LA"
               image="/images/expawdition.png"
               className="min-w-0"
             ></HomeGroupCard>
@@ -49,16 +95,20 @@ export default function HomeComponent(props: any) {
           <Text size="8" className="font-orelega" style={{ color: '#272962' }}>
             what&apos;s new
           </Text>
-          {grouplist &&
-            grouplist.map((group: Group, index: number) => (
-              <HomeEditionCard
-                key={index}
-                date={group.editions[0].publishDate}
-                title={group.editions[0].title}
-                name={group.name}
-                photoentrylist={group.editions[0].photoEntries}
-              ></HomeEditionCard>
-            ))}
+          {editions &&
+            editions.forEach((edition: any) =>
+              edition.map((ed: any, index: number) => {
+                return (
+                  <HomeEditionCard
+                    key={index}
+                    date={ed.publishDate}
+                    title={ed.title}
+                    name={ed.groupName}
+                    photoentrylist={ed.photoEntries}
+                  ></HomeEditionCard>
+                );
+              })
+            )}
         </Flex>
       </Flex>
     </div>
