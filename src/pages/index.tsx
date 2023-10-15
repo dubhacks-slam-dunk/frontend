@@ -20,16 +20,15 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../utils/firebase';
+import { login, logout } from '@/utils/auth';
 
 export default function Home() {
   const [user, loading, error] = useAuthState(auth);
   const router = useRouter();
 
-  console.log(user);
-
   useEffect(() => {
-    if (user) {
-      router.push('/authenticated');
+    if (!user) {
+      router.push('/auth');
     } else {
       const newUser = new User('testId', 'test', 'test', []);
       const newEditor = new Editor('test', 'test');
@@ -114,12 +113,9 @@ export default function Home() {
 
   return (
     <>
-      {/* <h1 className="font-dm">expawdition</h1>
-      <h1 className="font-orelega">frienditions</h1> */}
-      <Navbar isLoggedIn={!!user} userUid={user?.uid} />
-      <UpdateForm></UpdateForm>
-      {/* <Update></Update> */}
-      {/* <EmptyHome></EmptyHome> */}
+      <button onClick={logout}>
+        Logout
+      </button>
     </>
   );
 }
