@@ -5,10 +5,11 @@ import Image from 'next/image';
 import EditionCard from '@/components/EditionCard';
 import UpdateForm from '@/components/UpdateForm';
 import { useRouter } from 'next/router';
+import User from '@/types/User';
 
 export default function Group(props: any) {
   const [showNewUpdateForm, setShowNewUpdateForm] = useState(false);
-  const group: any = []; // THIS IS WRONG AND NEEDS TO BE REPLACED WITH DYNAMIC DATA
+  const currentGroup: any = []; // THIS IS WRONG AND NEEDS TO BE REPLACED WITH DYNAMIC DATA
 
   const router = useRouter();
   const { group } = router.query;
@@ -40,8 +41,8 @@ export default function Group(props: any) {
             </Flex>
             <Image
               className="rounded-md"
-              src="/images/expawdition.png" // {group.image} replace with dynamic data
-              alt="" // {group.name} replace with dynamic data
+              src="/images/expawdition.png" // {currentGroup.image} replace with dynamic data
+              alt="" // {currentGroup.name} replace with dynamic data
               width="500"
               height="10"
             ></Image>
@@ -51,8 +52,8 @@ export default function Group(props: any) {
               </Text>
               <Flex direction="row" justify="between">
                 <Flex direction="row" className="gap-4">
-                  {group.users &&
-                    group.users.map((user: User, index: number) => (
+                  {currentGroup.users &&
+                    currentGroup.users.map((user: User, index: number) => (
                       <Avatar
                         key={index}
                         // src={user.image ? user.image : "A"} // user's google profile photo !!!
