@@ -31,6 +31,8 @@ const HomePage: React.FC = () => {
       };
 
       // joinGroupOnFirebase();
+
+      // updateEditionWithEntry x 4
     }
   }, [router, user]);
 

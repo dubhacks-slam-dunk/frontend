@@ -14,7 +14,7 @@ import {
   addMediaEntry,
   addPhotoEntry,
 } from '@/utils/entries-helper';
-import { addGroup } from '@/utils/groups-helpers';
+import { addGroup, addSubsequentEdition } from '@/utils/groups-helpers';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -84,11 +84,30 @@ export default function Home() {
 
       const addGroupToFirebase = async () => {
         const editionId = await addEdition(newEdition);
-        const joinCode = await addGroup(newGroup, editionId);
-        console.log('🚀 ~ file: index.tsx:78 ~ addGroupToFirebase ~ joinCode:', joinCode);
+        const groupId = await addGroup(newGroup, editionId);
+        // const userId = await getUserIdFromUid(user.uid);
+        // await addGroupToUser(groupId);
       };
 
       // addGroupToFirebase();
+
+      const addAnotherEditionToGroup = async () => {
+        const editionProps = {
+          title: 'another test',
+          publishDate: new Date(),
+          summary: 'another test',
+          thingsToCelebrate: [],
+          media: [],
+          images: [],
+          gossipCorner: [],
+          signOff: 'another test',
+        };
+        const newEdition = new Edition(editionProps as EditionProps);
+        const editionId = await addEdition(newEdition);
+        await addSubsequentEdition('5Uif4kMIDTq0slIA1wJ0', editionId);
+      };
+
+      // addAnotherEditionToGroup();
     }
   }, [user, router]);
 
