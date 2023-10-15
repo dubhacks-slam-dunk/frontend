@@ -5,54 +5,105 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
+type NewsletterRequest = {
+  editor: string;
+  celebrateEntries: Array<{ User: string; Entry: string }>;
+  gossipCorners: Array<{ User: string; Entry: string }>;
+  recentInterests: Array<{ User: string; Entry: string }>;
+};
+
 const systemMessages: Record<string, string> = {
   Columnist:
-    'You are writing a weekly newsletter to recap the lives of various groups. They may be friends, family, coworkers, et cetera. You use your unique voice to express your thoughts and viewpoints on various subjects, often in a conversational style. You have personal opinions that slip out here and there but you are not judgemental.',
-  Girlboss:
-    'You are writing a weekly newsletter to recap the lives of various groups. They may be friends, family, coworkers, et cetera. In your day-to-day life, you are a girlboss and you are dedicated to your writing. Your writing personality can be boiled down to "narrative my-life-is-a-movie fashion designer in new york". ',
+    'You are writing a weekly newsletter to recap the lives of various groups. Your voice is distinctive, sprinkled with your own take on events. Though you wear your opinions on your sleeve, you exercise caution to remain non-judgmental, respecting the diversity of experiences covered. IMPORTANT: your response should be NO LONGER than 40 tokens.',
   Showman:
-    'You are writing a weekly newsletter to recap the lives of various groups. They may be friends, family, coworkers, et cetera. You provide play-by-play descriptions of the events, often using technical sports terminology to convey the excitement and action.',
+    "You are writing a weekly newsletter to recap the lives of various groups. You're the commentator everyone needs but didn't know they wanted, providing moment-to-moment coverage on the week's events. Whether it's a milestone or a mundane moment, you capture it with the enthusiasm of a sports announcer, employing jargon that elevates the mundane into the realm of the extraordinary. IMPORTANT: your response should be NO LONGER than 40 tokens.",
   StoryTeller:
-    'You are writing a weekly newsletter to recap the lives of various groups. They may be friends, family, coworkers, et cetera. You employ a storytelling approach, using vivid descriptions, anecdotes, and a narrative structure. You writing creates a sense of immersion, drawing readers into the subject matter.',
+    "You are writing a weekly newsletter to recap the lives of various groups. You're the bard of the newsletter world, turning life's prosaic moments into enthralling tales. Your writing is atmospheric, rich with anecdotes and vivid descriptions that paint a complete picture. Readers won't just scan your articles; they'll dive into them, captivated by your narrative craftsmanship. IMPORTANT: your response should be NO LONGER than 40 tokens.",
+};
+
+const summarizeEvents = async (categories: NewsletterRequest, editor: string) => {
+  const entries = [
+    ...categories.celebrateEntries.map(e => `Celebrate: ${e.User}: ${e.Entry}`),
+    ...categories.gossipCorners.map(e => `Gossip: ${e.User}: ${e.Entry}`),
+    ...categories.recentInterests.map(e => `Interest: ${e.User}: ${e.Entry}`),
+  ];
+
+  const inputText = entries.join('\n');
+  const userInput = `Based on the following information, please provide a general summary for the week:\n${inputText}.`;
+  const systemMessage =
+    systemMessages[editor];
+
+  const chatCompletion = await openai.chat.completions.create({
+    messages: [
+      { role: 'system', content: systemMessage },
+      { role: 'user', content: userInput },
+    ],
+    model: 'gpt-3.5-turbo',
+    temperature: 0.7,
+  });
+
+  return chatCompletion.choices[0].message?.content;
+};
+
+const pickRandomEntry = (entries: Array<{ User: string; Entry: string }>) => {
+  const randomIndex = Math.floor(Math.random() * entries.length);
+  return entries[randomIndex];
+};
+
+const generatePersonaComment = async (persona: string, entry: { User: string; Entry: string }) => {
+  const systemMessage = systemMessages[persona];
+  const userInput = `Please comment on ${entry.User}'s entry: ${entry.Entry}`;
+
+  const chatCompletion = await openai.chat.completions.create({
+    messages: [
+      { role: 'system', content: systemMessage },
+      { role: 'user', content: userInput },
+    ],
+    model: 'gpt-3.5-turbo',
+    temperature: 0.9,
+  });
+
+  return chatCompletion.choices[0].message?.content;
 };
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
-    const editor: string = req.body.editor;
-    const systemMessage = systemMessages[editor];
+    const data: NewsletterRequest = req.body;
 
-    const celebrateEntries: Array<{ User: string; Entry: string }> = req.body.celebrateEntries;
-    const gossipCorners: Array<{ User: string; Entry: string }> = req.body.gossipCorners;
-
-    if (!Array.isArray(celebrateEntries) || !Array.isArray(gossipCorners)) {
+    // Validation
+    if (
+      !Array.isArray(data.celebrateEntries) ||
+      !Array.isArray(data.gossipCorners) ||
+      !Array.isArray(data.recentInterests)
+    ) {
       return res.status(400).json({ error: 'Invalid data structure' });
     }
 
-    if (!systemMessage) {
+    if (!systemMessages[data.editor]) {
       return res.status(400).json({ error: 'Invalid persona' });
     }
-    console.log(editor);
 
-    const celebrateText = celebrateEntries.map(e => `${e.User}: ${e.Entry}`).join('\n');
-    const gossipText = gossipCorners.map(g => `${g.User}: ${g.Entry}`).join('\n');
+    // Generate comments and summary
+    const summary = await summarizeEvents(data, data.editor);
+    const celebrateComment = await generatePersonaComment(
+      data.editor,
+      pickRandomEntry(data.celebrateEntries)
+    );
+    const gossipComment = await generatePersonaComment(
+      data.editor,
+      pickRandomEntry(data.gossipCorners)
+    );
+    const interestComment = await generatePersonaComment(
+      data.editor,
+      pickRandomEntry(data.recentInterests)
+    );
 
-    const userInput = `Please summarize the following celebrations and gossip for the newsletter in 100 words or less:
-    Celebrations:
-    ${celebrateText}
-    
-    Gossip Corner:
-    ${gossipText}`;
-
-    const chatCompletion = await openai.chat.completions.create({
-      messages: [
-        { role: 'system', content: systemMessage },
-        { role: 'user', content: userInput },
-      ],
-      model: 'gpt-3.5-turbo',
-      temperature: 0.9,
+    res.status(200).json({
+      summary,
+      celebrateComment,
+      gossipComment,
+      interestComment,
     });
-
-    res.status(200).json(chatCompletion.choices[0].message?.content);
   } catch (error) {
     res.status(500).json({ error: 'OpenAI API request failed' });
   }
