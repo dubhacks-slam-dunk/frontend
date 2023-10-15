@@ -16,7 +16,7 @@ export default function EditorCard(props: any) {
         }}
       >
         <Flex className="flex-col space-y-1">
-          <Text size="2">YOUR EDITOR</Text>
+          <Text size="1">YOUR EDITOR</Text>
           <Text>{props.summary}</Text>
         </Flex>
       </Flex>

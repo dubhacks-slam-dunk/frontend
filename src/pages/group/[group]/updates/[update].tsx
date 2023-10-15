@@ -1,22 +1,41 @@
 import { Flex, Grid, Text, Button, IconButton, Avatar } from '@radix-ui/themes';
-import { ChevronLeftIcon, StarIcon } from '@radix-ui/react-icons';
+import {
+  ChevronLeftIcon,
+  StarIcon,
+  ReaderIcon,
+  SpeakerModerateIcon,
+  DesktopIcon,
+} from '@radix-ui/react-icons';
 import Image from 'next/image';
 import CelebrateEntry from '@/types/CelebrateEntry';
 import UpdateEntryCard from '@/components/UpdateEntryCard';
 import EditorCard from '@/components/EditorCard';
 import GossipEntry from '@/types/GossipEntry';
+import MediaEntry from '@/types/MediaEntry';
 import PhotoEntry from '@/types/PhotoEntry';
 import { useRouter } from 'next/router';
+import MediaRating from '@/components/MediaRating';
 
 export default function Update(props: any) {
   const router = useRouter();
   const celebratelist: CelebrateEntry[] = []; // THIS NEEDS TO CONNECT TO DATA
   const gossiplist: GossipEntry[] = []; // THIS NEEDS TO CONNECT TO DATA
+  const medialist: MediaEntry[] = []; // THIS NEEDS TO CONNECT TO DATA
   const photolist: PhotoEntry[] = []; // THIS NEEDS TO CONNECT TO DATA
+  const gptTitle: string = 'AI Title'; // THIS NEEDS TO CONNECT TO DATA
+  const gptSummary: string = '2-3 sentences go here'; // THIS NEEDS TO CONNECT TO DATA
+  const gptCelebrateSummary: string = 'editor opinion on things to celebrate'; // THIS NEEDS TO CONNECT TO DATA
+  const gptMediaSummary: string = 'editor opinion on media'; // THIS NEEDS TO CONNECT TO DATA
+  const gptTeaSummary: string = 'editor opinion on tea'; // THIS NEEDS TO CONNECT TO DATA
+  const gptGoodbye: string = 'editor goodbye'; // THIS NEEDS TO CONNECT TO DATA
+  const issuePic: string = ''; // THIS NEEDS TO CONNECT TO DATA
+  const issueNo: string = '1'; // THIS NEEDS TO CONNECT TO DATA
+  const issueDate: string = 'Oct 10, 2023'; // THIS NEEDS TO CONNECT TO DATA
   const goBack = () => {
     // GO BACK TO GROUP PAGE
     router.back();
   };
+
   return (
     <div>
       <Flex className="flex-col space-y-6 w-11/12 mx-auto mt-12 mb-12">
@@ -40,33 +59,37 @@ export default function Update(props: any) {
               borderBottomWidth: '1px',
             }}
           >
-            <Text>Date</Text>
-            <Text>Issue no.</Text>
+            <Text>{issueDate}</Text>
+            <Text>Issue no. {issueNo}</Text>
           </Flex>
 
           <Text size="8" className="font-orelega" style={{ color: '#272962' }}>
-            [AI title]
+            {gptTitle}
           </Text>
           <Image
             className="rounded-md"
-            src="" // first picture in PhotoEntry[]
-            alt="" // first caption in PhotoEntry[] or nothing ""
+            src={issuePic}
+            alt={issuePic}
             width="500"
             height="10"
           ></Image>
 
           <Flex
-            direction="column"
-            className="px-3 space-y-2]"
+            className="flex-row space-x-3 items-center"
             style={{
               color: '#272962',
               borderColor: '#5B5BD6',
               borderStyle: 'solid',
-              borderWidth: '1px',
+              borderWidth: 1,
+              borderRadius: 8,
+              padding: 10,
+              backgroundColor: '#DADCFF',
             }}
           >
-            <Text>TL;DR from your editor</Text>
-            <Text>Hello</Text>
+            <Flex className="flex-col space-y-1">
+              <Text size="1">TL;DR FROM YOUR EDITOR</Text>
+              <Text>{gptSummary}</Text>
+            </Flex>
           </Flex>
         </Flex>
         <Flex direction="column" align="center">
@@ -79,15 +102,21 @@ export default function Update(props: any) {
         </Flex>
 
         <Flex className="flex-col space-y-4">
-          <Text>things to celebrate</Text>
+          <Text
+            className="text-center"
+            style={{
+              color: '#272962',
+              fontWeight: 600,
+            }}
+          >
+            things to celebrate
+          </Text>
           <Flex className="flex-col space-y-3">
             {celebratelist &&
               celebratelist.map((entry: CelebrateEntry, index: number) => (
                 <UpdateEntryCard key={index} user={entry.user} entry={entry.entry} />
               ))}
-            <EditorCard
-              summary="taryn got played too many times" // DYNAMIC DATA
-            ></EditorCard>
+            <EditorCard summary={gptCelebrateSummary}></EditorCard>
           </Flex>
         </Flex>
 
@@ -97,38 +126,44 @@ export default function Update(props: any) {
             color: '#272962',
             borderColor: '#5B5BD6',
             borderStyle: 'solid',
+            borderRadius: '8px',
             borderWidth: '1px',
           }}
         >
-          <Text>recent interests</Text>
-          <Flex className="flex-row space-x-3">
-            <StarIcon></StarIcon>
-            <Flex className="flex-col space-y-1">
-              <Text>Name watched</Text>
-              <Text>Movie name</Text>
-            </Flex>
+          <Text
+            className="text-center"
+            style={{
+              color: '#272962',
+              fontWeight: 600,
+              marginTop: 8,
+            }}
+          >
+            recent interests
+          </Text>
+          <Flex direction="column">
+            {/* {medialist &&
+              medialist.map((entry: MediaEntry, index: number) => (
+                <MediaRating
+                  key={index}
+                  name={entry.user.firstName}
+                  entry={entry.entry}
+                  type={entry.type}
+                />
+              ))} */}
           </Flex>
         </Flex>
-        <EditorCard
-          summary="thoughts on recent media" // DYNAMIC DATA
-        ></EditorCard>
-
-        <Flex
-          direction="column"
-          className="px-3 space-y-2]"
-          style={{
-            color: '#272962',
-            borderColor: '#5B5BD6',
-            borderStyle: 'solid',
-            borderWidth: '1px',
-          }}
-        >
-          <Text>TL;DR from your editor</Text>
-          <Text>Hello</Text>
-        </Flex>
+        <EditorCard summary={gptMediaSummary}></EditorCard>
 
         <Flex className="flex-col space-y-4">
-          <Text>photo gallery</Text>
+          <Text
+            className="text-center"
+            style={{
+              color: '#272962',
+              fontWeight: 600,
+            }}
+          >
+            photo gallery
+          </Text>
           <Grid columns="2">
             {photolist &&
               photolist.map((entry: PhotoEntry, index: number) => (
@@ -145,21 +180,26 @@ export default function Update(props: any) {
         </Flex>
 
         <Flex className="flex-col space-y-3">
-          <Text>what&apos;s the tea?</Text>
+          <Text
+            className="text-center"
+            style={{
+              color: '#272962',
+              fontWeight: 600,
+            }}
+          >
+            what&apos;s the tea?
+          </Text>
           <Flex className="flex-col space-y-3">
             {gossiplist &&
               gossiplist.map((entry: GossipEntry, index: number) => (
                 <UpdateEntryCard key={index} user={entry.user} entry={entry.entry} />
               ))}
           </Flex>
-          <EditorCard
-            summary="thoughts on the tea" // DYNAMIC DATA
-          ></EditorCard>
+          <EditorCard summary={gptTeaSummary}></EditorCard>
         </Flex>
 
         <Flex className="flex-col space-y-4">
-          <Text>that&apos;s all, folks!</Text>
-          <Text>Thanks for reading this update. Looking forward to the next issue!</Text>
+          <Text>{gptGoodbye}</Text>
         </Flex>
 
         <Button style={{ backgroundColor: '#5B5BD6' }}>Done</Button>
