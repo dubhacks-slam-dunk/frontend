@@ -1,8 +1,7 @@
-import { Input } from 'postcss';
-import { Flex, Text, Button, Select, TextArea, TextField, IconButton } from '@radix-ui/themes';
-import { ChevronLeftIcon } from '@radix-ui/react-icons';
-import { useState } from 'react';
 import { uploadImage } from '@/utils/image';
+import { ChevronLeftIcon } from '@radix-ui/react-icons';
+import { Button, Flex, IconButton, Select, Text, TextArea, TextField } from '@radix-ui/themes';
+import { useState } from 'react';
 
 export default function UpdateForm(props: any) {
   const [imageFile, setImageFile] = useState<File | null>(null);

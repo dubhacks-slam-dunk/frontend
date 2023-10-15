@@ -13,10 +13,16 @@ import { db } from './firebase';
 
 const usersRef = collection(db, 'users');
 
-export async function addUser(userId: string, firstName: string, lastName: string) {
+export async function addUser(
+  userId: string,
+  photoURL: string,
+  firstName: string,
+  lastName: string
+) {
   try {
     const docRef = await addDoc(usersRef, {
       uid: userId,
+      photoURL: photoURL,
       firstName: firstName,
       lastName: lastName,
       groups: [],

@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 
 export default function Group(props: any) {
   const [showNewUpdateForm, setShowNewUpdateForm] = useState(false);
+  const group: any = []; // THIS IS WRONG AND NEEDS TO BE REPLACED WITH DYNAMIC DATA
 
   const router = useRouter();
   const { group } = router.query;
@@ -39,8 +40,8 @@ export default function Group(props: any) {
             </Flex>
             <Image
               className="rounded-md"
-              src="/images/expawdition.png" // replace with dynamic data
-              alt={props.name} // replace with dynamic data
+              src="/images/expawdition.png" // {group.image} replace with dynamic data
+              alt="" // {group.name} replace with dynamic data
               width="500"
               height="10"
             ></Image>
@@ -50,6 +51,14 @@ export default function Group(props: any) {
               </Text>
               <Flex direction="row" justify="between">
                 <Flex direction="row" className="gap-4">
+                  {group.users &&
+                    group.users.map((user: User, index: number) => (
+                      <Avatar
+                        key={index}
+                        // src={user.image ? user.image : "A"} // user's google profile photo !!!
+                        fallback="A"
+                      />
+                  ))}
                   <Avatar
                     radius="full"
                     src="https://images.unsplash.com/photo-1502823403499-6ccfcf4fb453?&w=256&h=256&q=70&crop=focalpoint&fp-x=0.5&fp-y=0.3&fp-z=1&fit=crop"

@@ -74,10 +74,10 @@ export async function addUserToGroup(joinCode: string, userId: string) {
 export async function getAllGroupsById(groupIds: string[]) {
   try {
     const groupPromises = groupIds.map(async gid => {
-      const docRef = doc(db, 'groups', gid); // Replace 'yourCollection' with your actual collection name
+      const docRef = doc(db, 'groups', gid);
       const docSnapshot = await getDoc(docRef);
       if (docSnapshot.exists()) {
-        return docSnapshot.data();
+        return { id: gid, data: docSnapshot.data() }; // Include the ID along with the data
       } else {
         return null;
       }

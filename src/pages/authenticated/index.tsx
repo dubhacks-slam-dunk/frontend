@@ -38,7 +38,7 @@ const HomePage: React.FC = () => {
 
   return (
     <div>
-      <Navbar isLoggedIn={!!user} />
+      <Navbar isLoggedIn={!!user} userUid={user?.uid} />
       <h1>Welcome to the Home Page</h1>
       <p>This is a basic home page component.</p>
     </div>
