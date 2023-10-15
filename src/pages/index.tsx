@@ -1,4 +1,4 @@
-import Navbar from '@/components/Navbar';
+import UpdateForm from '@/components/UpdateForm';
 import CelebrateEntry from '@/types/CelebrateEntry';
 import { Edition, EditionProps } from '@/types/Edition';
 import Editor from '@/types/Editor';
@@ -21,12 +21,11 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../utils/firebase';
 import { login, logout } from '../utils/auth';
 import UpdateForm from '@/components/UpdateForm';
-import Update from '@/pages/group/[group]/updates/[update]';
+import Update from '@/pages/group/updates/[update]';
 import EmptyHome from '@/components/EmptyHome';
 import InviteMembers from '@/components/InviteMembers';
 import EmptyGroup from '@/components/EmptyGroup';
 import LandingPage from '@/components/LandingPage';
-
 
 export default function Home() {
   const [user, loading, error] = useAuthState(auth);
@@ -73,7 +72,7 @@ export default function Home() {
         summary: 'test',
         thingsToCelebrate: [],
         media: [],
-        images: [],
+        photoEntries: [],
         gossipCorner: [],
         signOff: 'test',
       };
@@ -106,7 +105,7 @@ export default function Home() {
           summary: 'another test',
           thingsToCelebrate: [],
           media: [],
-          images: [],
+          photoEntries: [],
           gossipCorner: [],
           signOff: 'another test',
         };

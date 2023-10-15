@@ -3,6 +3,7 @@ import NewGroup from '@/components/NewGroup';
 import { getAllGroupsById } from '@/utils/groups-helpers';
 import { getGroupIdsFromUser } from '@/utils/users-helpers';
 import { Button, Flex, Text } from '@radix-ui/themes';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 const userId = 'ch6pkblCra5J8YIBM58R';
@@ -10,6 +11,7 @@ const userId = 'ch6pkblCra5J8YIBM58R';
 export default function Groups() {
   const [showNewGroupForm, setShowNewGroupForm] = useState(false);
   const [groups, setGroups] = useState<any>();
+  const router = useRouter();
 
   useEffect(() => {
     const getAllUserGroupsFromFirebase = async () => {
@@ -18,6 +20,8 @@ export default function Groups() {
       const groupsData = await getAllGroupsById(groupIds);
       setGroups(groupsData);
     };
+
+    getAllUserGroupsFromFirebase();
   }, []);
 
   const openNewGroup = () => {
@@ -27,6 +31,15 @@ export default function Groups() {
   const closeNewGroup = () => {
     setShowNewGroupForm(false); // Function to close the CreateGroup component
   };
+
+  const groupCards = groups?.map((data: any, index: number) => (
+    <GroupCard
+      key={index} // Make sure to include a unique key when mapping React components
+      name={data.name}
+      image={data.image}
+      date={'No editions created yet!'}
+    />
+  ));
 
   return (
     <div className="font-dm">
@@ -46,21 +59,7 @@ export default function Groups() {
             <Button onClick={openNewGroup}>new group</Button>
           </Flex>
           <Flex direction="column" gap="4" className="w-11/12 mx-auto">
-            <GroupCard
-              name="Expawdition"
-              image="/images/expawdition.png"
-              date="Oct 10, 2023"
-            ></GroupCard>
-            <GroupCard
-              name="Expawdition"
-              image="/images/expawdition.png"
-              date="Oct 10, 2023"
-            ></GroupCard>
-            <GroupCard
-              name="Expawdition"
-              image="/images/expawdition.png"
-              date="Oct 10, 2023"
-            ></GroupCard>
+            {groups && groupCards}
           </Flex>{' '}
         </div>
       )}
