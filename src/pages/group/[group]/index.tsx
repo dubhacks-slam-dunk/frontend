@@ -13,7 +13,7 @@ export default function Group(props: any) {
   const [editions, setEditions] = useState<any>();
 
   const LatestEdition = () => {
-    const latestEdition = editions?.reduce((latest, edition) => {
+    const latestEdition = editions?.reduce((latest: any, edition: any) => {
       return edition.publishDate > latest.publishDate ? edition : latest;
     }, editions[0]);
 
