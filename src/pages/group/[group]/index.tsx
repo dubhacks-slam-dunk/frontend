@@ -93,7 +93,7 @@ export default function Group(props: any) {
   return (
     <>
       {showNewUpdateForm ? (
-        <UpdateForm onClose={closeNewUpdate}></UpdateForm>
+        <UpdateForm onClose={closeNewUpdate} editionId={editions[editions.length - 1]}></UpdateForm>
       ) : (
         <div className="font-dm">
           <Flex direction="column" className="w-11/12 mx-auto mt-12 mb-12 gap-4">

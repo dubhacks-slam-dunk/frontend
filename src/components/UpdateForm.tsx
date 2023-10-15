@@ -1,6 +1,9 @@
+import { updateCelebrateEntry, updateGossipEntry, updateMediaEntry } from '@/utils/entries-helper';
+import { getGroupIdByEditionId } from '@/utils/groups-helpers';
 import { uploadImage } from '@/utils/image';
 import { ChevronLeftIcon } from '@radix-ui/react-icons';
-import { Button, Flex, IconButton, Select, Text, TextArea, TextField } from '@radix-ui/themes';
+import { Button, Flex, IconButton, Text, TextArea, TextField } from '@radix-ui/themes';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 export default function UpdateForm(props: any) {
@@ -11,6 +14,8 @@ export default function UpdateForm(props: any) {
   const [recentBingeContent, setRecentBingeContent] = useState<string | null>(null);
   const [gossipContent, setGossipContent] = useState<string | null>(null);
 
+  const router = useRouter();
+
   const closeForm = () => {
     // Close the form and call the onClose function
     props.onClose();
@@ -18,6 +23,7 @@ export default function UpdateForm(props: any) {
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
+
     if (file) {
       setImageFile(file);
       const url = URL.createObjectURL(file);
@@ -26,17 +32,34 @@ export default function UpdateForm(props: any) {
   };
 
   const handleSubmit = async (e: any) => {
-    if (!imageFile) {
-      return;
-    }
+    e.preventDefault();
+
+    const editionId = props.editionId.id;
+    console.log(editionId);
 
     try {
-      e.preventDefault();
-      console.log(winContent);
-      console.log(selectContent);
+      if (imageFile) {
+        const imageUrl = await uploadImage(imageFile);
+        console.log(imageUrl.toString());
+        // updatePhotoEntry(editionId, encodeURIComponent(imageUrl));
+      }
 
-      const imageUrl = await uploadImage(imageFile);
-      console.log(imageUrl);
+      if (winContent) {
+        console.log(winContent);
+
+        await updateCelebrateEntry(winContent, editionId);
+      }
+      if (selectContent && recentBingeContent) {
+        await updateMediaEntry(selectContent, recentBingeContent, editionId);
+      }
+      if (gossipContent) {
+        await updateGossipEntry(gossipContent, editionId);
+      }
+
+      const groupId = await getGroupIdByEditionId(editionId);
+      // router.push(`/group/${groupId}`);
+      closeForm();
+      router.push(`/`);
     } catch (error) {
       console.error('Image upload failed:', error);
     }
@@ -57,7 +80,6 @@ export default function UpdateForm(props: any) {
             <Text size="8" className="font-orelega" style={{ color: '#5B5BD6' }}>
               give an update
             </Text>
-            f
           </Flex>
 
           <Flex className="flex-col space-y-2">
@@ -80,16 +102,35 @@ export default function UpdateForm(props: any) {
           <Flex className="flex-col space-y-2">
             <Text>2. a recent interest</Text>
             <Text>tell us what&apos;s your most recent media binge. </Text>
-            <Select.Root>
+            {/* <Select.Root>
               <Select.Trigger placeholder="select..." />
-              <Select.Content id={'select-element'}>
+              <Select.Content>
                 <Select.Item value="book">book</Select.Item>
                 <Select.Item value="movie">movie</Select.Item>
                 <Select.Item value="show">show</Select.Item>
                 <Select.Item value="song">song</Select.Item>
                 <Select.Item value="podcast">podcast</Select.Item>
               </Select.Content>
-            </Select.Root>
+            </Select.Root> */}
+            <div className="select-container">
+              <select
+                id="select-content-container"
+                placeholder="select..."
+                onChange={e => {
+                  setSelectContent(e.target.value);
+                }}
+                defaultValue={'none'}
+              >
+                <option disabled value="none">
+                  Select...
+                </option>
+                <option value="book">book</option>
+                <option value="movie">movie</option>
+                <option value="show">show</option>
+                <option value="song">song</option>
+                <option value="podcast">podcast</option>
+              </select>
+            </div>
             <TextField.Root>
               <TextField.Input
                 onChange={e => setRecentBingeContent(e.target.value)}
