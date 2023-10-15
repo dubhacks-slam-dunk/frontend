@@ -4,12 +4,12 @@ import Image from 'next/image';
 export default function GroupCard(props: any) {
   return (
     <div>
-      <Flex direction="column" gap="1" align="center">
+      <Flex direction="column" className=" mx-auto">
         <Image
           className="rounded-md"
           src={props.image}
           alt={props.name}
-          width="350"
+          width="500"
           height="10"
         ></Image>
         <Text>group name</Text>
