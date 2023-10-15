@@ -1,3 +1,4 @@
+import Navbar from '@/components/Navbar';
 import UpdateForm from '@/components/UpdateForm';
 import CelebrateEntry from '@/types/CelebrateEntry';
 import { Edition, EditionProps } from '@/types/Edition';
@@ -115,7 +116,7 @@ export default function Home() {
     <>
       {/* <h1 className="font-dm">expawdition</h1>
       <h1 className="font-orelega">frienditions</h1> */}
-
+      <Navbar isLoggedIn={!!user} userUid={user?.uid} />
       <UpdateForm></UpdateForm>
       {/* <Update></Update> */}
       {/* <EmptyHome></EmptyHome> */}
