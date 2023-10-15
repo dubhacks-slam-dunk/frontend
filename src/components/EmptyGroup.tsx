@@ -41,7 +41,7 @@ export default function EmptyGroup(props: any) {
                 <Avatar radius="full" fallback="A" />
             </Flex>
             
-            <Text>nothing’s here yet. invite your first members and start writing your first update! </Text>
+            <Text>nothing&apos;s here yet. invite your first members and start writing your first update! </Text>
         </Flex>
 
         

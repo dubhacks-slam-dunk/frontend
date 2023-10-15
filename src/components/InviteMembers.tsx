@@ -18,7 +18,7 @@ export default function InviteMembers(props: any) {
                 invite members
             </Text>
         </Flex>
-        <Text>share your group's join code</Text>
+        <Text>share your group&apos;s join code</Text>
         <Text>join code goes here</Text>
         <Text>or send a link to your friends!</Text>
         <Button style={{ backgroundColor: '#5B5BD6' }}>Copy share link</Button>
