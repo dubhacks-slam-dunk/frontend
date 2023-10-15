@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 export default function GroupCard(props: any) {
   const router = useRouter();
   const handleGroupCardClick = () => {
-    router.push(`../group/${props.id}`);
+    router.push({ pathname: `../group/${props.id}`, query: { groupId: `${props.id}` } });
   };
 
   return (
