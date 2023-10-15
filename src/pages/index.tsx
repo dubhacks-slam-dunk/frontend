@@ -15,6 +15,8 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../utils/firebase';
 import { login, logout } from '../utils/auth';
 import UpdateForm from '@/components/UpdateForm';
+import Update from '@/group/updates/[update]';
+import EmptyHome from '@/components/EmptyHome';
 
 
 export default function Home() {
@@ -73,7 +75,9 @@ export default function Home() {
       {/* <h1 className="font-dm">expawdition</h1>
       <h1 className="font-orelega">frienditions</h1> */}
 
-      <UpdateForm></UpdateForm>
+      {/* <UpdateForm></UpdateForm> */}
+      {/* <Update></Update> */}
+      <EmptyHome></EmptyHome>
     </>
   );
 }
