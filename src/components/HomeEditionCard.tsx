@@ -1,15 +1,17 @@
-import { Flex, Text } from '@radix-ui/themes';
+import { Flex, Text, AspectRatio } from '@radix-ui/themes';
 import Image from 'next/image';
+import PhotoEntry from '@/types/PhotoEntry';
 
-export default function EditionCard(props: any) {
+export default function HomeEditionCard(props: any) {
   return (
     <div>
       <Flex direction="column" className="mx-auto">
         <Text>{props.date}</Text>
         <Text>{props.title}</Text>
+        <Text>{props.name}</Text>
         <Flex direction="row">
           {props.photoentrylist &&
-            props.photoentrylist.map((entry: any, index: number) => (
+            props.photoentrylist.map((entry: PhotoEntry, index: number) => (
               <Image
                 key={index}
                 className="rounded-md"

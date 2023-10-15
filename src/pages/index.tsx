@@ -21,6 +21,7 @@ import { useEffect } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../utils/firebase';
 import { login, logout } from '@/utils/auth';
+import HomeComponent from '@/components/HomeComponent';
 
 export default function Home() {
   const [user, loading, error] = useAuthState(auth);
@@ -116,6 +117,8 @@ export default function Home() {
       <button onClick={logout}>
         Logout
       </button>
+      {/* <Navbar isLoggedIn={!!user} userUid={user?.uid} /> */}
+      <HomeComponent></HomeComponent>
     </>
   );
 }

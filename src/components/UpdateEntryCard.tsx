@@ -14,13 +14,11 @@ export default function UpdateEntryCard(props: any) {
           padding: 10,
         }}
       >
-        {/* <Avatar src={props.user.photo} radius="full" fallback="A" /> */}
-        <Avatar radius="full" fallback="A" />
+        <Avatar src={props.user.photo} radius="full" fallback="A" />
+
         <Flex className="flex-col space-y-1">
-          {/* <Text size="2">{props.user.name}</Text> */}
-          {/* <Text>{props.entry}</Text> */}
-          <Text size="2">TARYN</Text>
-          <Text>hellodl fslkdjsflksdajl;fkj as; dsflkdskl fjd;sal ;dljdflk s;ldasfkldsa ;df</Text>
+          <Text size="2">{props.user.name}</Text>
+          <Text>{props.entry}</Text>
         </Flex>
       </Flex>
     </div>

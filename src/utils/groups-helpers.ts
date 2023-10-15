@@ -35,6 +35,22 @@ export async function addGroup(group: Group, firstEdition: any) {
   }
 }
 
+export async function getGroupById(groupId: any) {
+  try {
+    const groupRef = doc(db, 'groups', groupId);
+    const groupSnapshot = await getDoc(groupRef);
+
+    if (groupSnapshot.exists()) {
+      return { id: groupId, ...groupSnapshot.data() };
+    } else {
+      throw new Error('Group with provided ID does not exist');
+    }
+  } catch (e) {
+    console.error('Error getting group by ID:', e);
+    throw e;
+  }
+}
+
 export async function addSubsequentEdition(groupId: string, editionId: any) {
   try {
     const groupRef = doc(db, 'groups', groupId);
