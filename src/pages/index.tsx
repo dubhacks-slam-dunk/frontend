@@ -12,7 +12,8 @@ export default function Home() {
 
   return (
     <>
-      <div>Hello world</div>
+      <h1 className="font-dm">expawdition</h1>
+      <h1 className="font-orelega">frienditions</h1>
     </>
   );
 }
