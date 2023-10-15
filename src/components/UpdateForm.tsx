@@ -1,12 +1,40 @@
 import { Input } from 'postcss';
 import { Flex, Text, Button, Select, TextArea, TextField, IconButton } from '@radix-ui/themes';
 import { ChevronLeftIcon } from '@radix-ui/react-icons';
+import { useState } from 'react';
+import { uploadImage } from '@/utils/image';
 
 export default function UpdateForm(props: any) {
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imageURL, setImageURL] = useState<string | null>(null);
+
   const closeForm = () => {
     // Close the form and call the onClose function
     props.onClose();
   };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImageFile(file);
+      const url = URL.createObjectURL(file);
+      setImageURL(url);
+    }
+  };
+
+  const handleSubmit = async () => {
+    if (!imageFile) {
+      return;
+    }
+
+    try {
+      const imageUrl = await uploadImage(imageFile);
+      console.log(imageUrl);
+    } catch (error) {
+      console.error('Image upload failed:', error);
+    }
+  };
+
   return (
     <div>
       <Flex direction="column" className="w-11/12 mx-auto space-y-5">
@@ -20,7 +48,7 @@ export default function UpdateForm(props: any) {
         </Flex>
 
         <Flex className="flex-col space-y-2">
-          <Text>it’s your turn to give an update!</Text>
+          <Text>it's your turn to give an update!</Text>
           <Text>
             answer each of the following prompts to be featured in your next group update.
           </Text>
@@ -28,13 +56,13 @@ export default function UpdateForm(props: any) {
 
         <Flex className="flex-col space-y-2">
           <Text>1. things to celebrate</Text>
-          <Text>name a small victory or a major win that you’d like to share!</Text>
+          <Text>name a small victory or a major win that you'd like to share!</Text>
           <TextArea size="2" placeholder="your response here"></TextArea>
         </Flex>
 
         <Flex className="flex-col space-y-2">
           <Text>2. a recent interest</Text>
-          <Text>tell us what’s your most recent media binge. </Text>
+          <Text>tell us what's your most recent media binge. </Text>
           <Select.Root>
             <Select.Trigger placeholder="select..." />
             <Select.Content>
@@ -66,9 +94,18 @@ export default function UpdateForm(props: any) {
             }}
           >
             <label className="px-4 py-2 flex items-center justify-center">
-              Add a Photo
-              <input type="file" className="hidden" />
+              {imageURL ? (
+                <img
+                  src={imageURL}
+                  alt="Uploaded Preview"
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                />
+              ) : (
+                'Add a Photo'
+              )}
+              <input type="file" className="hidden" onChange={handleFileChange} />
             </label>
+            <input type="file" className="hidden" onChange={handleFileChange} />
           </Flex>
         </Flex>
 
@@ -78,7 +115,9 @@ export default function UpdateForm(props: any) {
           <TextArea size="2" placeholder="your response here"></TextArea>
         </Flex>
 
-        <Button style={{ backgroundColor: '#5B5BD6' }}>Submit my update!</Button>
+        <Button onClick={handleSubmit} style={{ backgroundColor: '#5B5BD6' }}>
+          Submit my update!
+        </Button>
       </Flex>
     </div>
   );
