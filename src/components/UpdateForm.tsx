@@ -57,9 +57,7 @@ export default function UpdateForm(props: any) {
       }
 
       const groupId = await getGroupIdByEditionId(editionId);
-      // router.push(`/group/${groupId}`);
       closeForm();
-      router.push(`/`);
     } catch (error) {
       console.error('Image upload failed:', error);
     }
