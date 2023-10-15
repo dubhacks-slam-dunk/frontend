@@ -2,7 +2,7 @@ import EditionCard from '@/components/EditionCard';
 import UpdateForm from '@/components/UpdateForm';
 import User from '@/types/User';
 import { getEditionsByEditionId } from '@/utils/editions-helpers';
-import { getGroupById } from '@/utils/groups-helpers';
+import { getGroupById, getGroupByJoinCode } from '@/utils/groups-helpers';
 import { ChevronLeftIcon } from '@radix-ui/react-icons';
 import { Avatar, Button, Flex, IconButton, Text } from '@radix-ui/themes';
 import Image from 'next/image';
@@ -74,7 +74,7 @@ export default function Group(props: any) {
 
   useEffect(() => {
     const fetchGroup = async () => {
-      const groupData: any = await getGroupById(groupId as string);
+      const groupData: any = await getGroupByJoinCode(groupId as string);
       const editionIds = groupData?.editions;
       const editionsData = await getEditionsByEditionId(editionIds);
       setEditions(editionsData);

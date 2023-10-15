@@ -37,7 +37,7 @@ export default function Groups() {
 
   const groupCards = groups?.map((data: any, index: number) => (
     <GroupCard
-      id={data.id}
+      id={data.data.joinCode}
       key={`${data.id}-${index}`} // Make sure to include a unique key when mapping React components
       name={data.data.name}
       image={data.data.image}

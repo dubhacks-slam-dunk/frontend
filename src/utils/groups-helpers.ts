@@ -70,6 +70,24 @@ export async function getGroupById(groupId: string) {
   }
 }
 
+export async function getGroupByJoinCode(joinCode: string) {
+  try {
+    const groupQuery = query(collection(db, 'groups'), where('joinCode', '==', joinCode));
+    const groupSnapshot = await getDocs(groupQuery);
+
+    if (!groupSnapshot.empty) {
+      const groupData = groupSnapshot.docs[0].data();
+      return { id: groupSnapshot.docs[0].id, ...groupData };
+    } else {
+      throw new Error('Group with provided join code does not exist');
+    }
+  } catch (e) {
+    console.error('Error getting group by join code:', e);
+    throw e;
+  }
+}
+
+
 export async function addSubsequentEdition(groupId: string, editionId: any) {
   try {
     const groupRef = doc(db, 'groups', groupId);

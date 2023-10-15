@@ -26,15 +26,21 @@ export async function addCelebrateEntry(celebrateEntry: CelebrateEntry) {
 
 export async function updatePhotoEntry(photoEntryUrl: string, editionId: string) {
   try {
-    const editionRef = doc(db, 'editions', editionId);
+    console.log(`Updating photo entry for edition: ${editionId}`);
 
-    // Check if photoEntryUrl exists in images
+    const editionRef = doc(db, 'editions', editionId);
     const editionSnapshot = await getDoc(editionRef);
+
+    if (!editionSnapshot.exists()) {
+      console.error(`Document with id ${editionId} does not exist.`);
+      return;
+    }
+
     const images = editionSnapshot.data()?.images || [];
 
     if (!images.some((image: any) => image.url === photoEntryUrl)) {
       // Photo entry with the same URL doesn't exist, create a new one
-      const photoEntryRef = await addDoc(collection(db, 'photoEntries'), {
+      const photoEntryRef = await addDoc(photoEntriesRef, {
         url: photoEntryUrl, // Set the URL for the new photo entry
         // Add other properties for photoEntry
       });
@@ -53,7 +59,10 @@ export async function updatePhotoEntry(photoEntryUrl: string, editionId: string)
     // If photo entry with the same URL exists, return its id
     const existingPhotoEntry = images.find((image: any) => image.url === photoEntryUrl);
     return existingPhotoEntry?.id;
-  } catch (e) {
+  } catch (e: any) {
+    if (e.code === 'unavailable') {
+      console.error('Error updating photo entry: Firebase is unavailable.');
+    }
     console.error('Error updating photo entry:', e);
     throw e;
   }
