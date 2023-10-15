@@ -9,7 +9,7 @@ export interface EditionProps {
   summary: string;
   thingsToCelebrate: CelebrateEntry[];
   media: MediaEntry[];
-  images: PhotoEntry[];
+  photoEntries: PhotoEntry[];
   gossipCorner: GossipEntry[];
   signOff: string;
 }
@@ -20,20 +20,28 @@ export class Edition {
   summary: string;
   thingsToCelebrate: CelebrateEntry[];
   media: MediaEntry[];
-  images: PhotoEntry[];
+  photoEntries: PhotoEntry[];
   gossipCorner: GossipEntry[];
   signOff: string;
 
   constructor(editionProps: EditionProps) {
-    const { title, publishDate, summary, thingsToCelebrate, media, images, gossipCorner, signOff } =
-      editionProps;
+    const {
+      title,
+      publishDate,
+      summary,
+      thingsToCelebrate,
+      media,
+      photoEntries,
+      gossipCorner,
+      signOff,
+    } = editionProps;
 
     this.title = title;
     this.publishDate = publishDate;
     this.summary = summary;
     this.thingsToCelebrate = thingsToCelebrate;
     this.media = media;
-    this.images = images;
+    this.photoEntries = photoEntries;
     this.gossipCorner = gossipCorner;
     this.signOff = signOff;
   }
