@@ -6,18 +6,21 @@ import UpdateEntryCard from '@/components/UpdateEntryCard';
 import EditorCard from '@/components/EditorCard';
 import GossipEntry from '@/types/GossipEntry';
 import PhotoEntry from '@/types/PhotoEntry';
+import { useRouter } from 'next/router';
 
 export default function Update(props: any) {
+  const router = useRouter();
   const celebratelist: CelebrateEntry[] = []; // THIS NEEDS TO CONNECT TO DATA
   const gossiplist: GossipEntry[] = []; // THIS NEEDS TO CONNECT TO DATA
   const photolist: PhotoEntry[] = []; // THIS NEEDS TO CONNECT TO DATA
   const goBack = () => {
     // GO BACK TO GROUP PAGE
+    router.back();
   };
   return (
     <div>
-      <Flex className="flex-col space-y-6 w-11/12 mx-auto">
-        <Flex direction="row" align="start" className="mt-12">
+      <Flex className="flex-col space-y-6 w-11/12 mx-auto mt-12 mb-12">
+        <Flex direction="row" align="center">
           <IconButton onClick={goBack} variant="ghost">
             <ChevronLeftIcon width="35" height="35" />
           </IconButton>
@@ -65,6 +68,14 @@ export default function Update(props: any) {
             <Text>TL;DR from your editor</Text>
             <Text>Hello</Text>
           </Flex>
+        </Flex>
+        <Flex direction="column" align="center">
+          <Image
+            src="/images/frienditions-logo.png"
+            alt="frienditions-logo"
+            width="30"
+            height="30"
+          ></Image>
         </Flex>
 
         <Flex className="flex-col space-y-4">
