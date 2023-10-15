@@ -1,9 +1,13 @@
 // import { iris9 } from '@radix-ui/colors';
-
+import { useState } from 'react';
 import { Flex, Text, AspectRatio, IconButton, Button, TextField } from '@radix-ui/themes';
 import { ChevronLeftIcon } from '@radix-ui/react-icons';
 
 export default function NewGroup(props: any) {
+  const [showCreateGroupForm, setShowCreateGroupForm] = useState(false);
+  const openCreateGroup = () => {
+    setShowCreateGroupForm(true);
+  };
   const closeForm = () => {
     // Close the form and call the onClose function
     props.onClose();
@@ -21,13 +25,15 @@ export default function NewGroup(props: any) {
         </Flex>
         <Flex direction="column" className="mt-30">
           <Text>create a new group</Text>
-          <Button style={{ backgroundColor: '#5B5BD6' }}>Create new group</Button>
+          <Button onClick={openCreateGroup} style={{ backgroundColor: '#5B5BD6' }}>
+            Create new group
+          </Button>
           <Text>OR</Text>
           <Text>enter a group join code</Text>
           <Button style={{ backgroundColor: '#5B5BD6' }}>Join</Button>
-          <TextField.Root>
-            <TextField.Slot>{/* <MagnifyingGlassIcon height="16" width="16" /> */}</TextField.Slot>
-            <TextField.Input placeholder="Search the docs…" />
+          <TextField.Root className="mt-2">
+            <TextField.Slot></TextField.Slot>
+            <TextField.Input className="m-1 mx-2" placeholder="enter code (ex. ABCD)" />
           </TextField.Root>
         </Flex>
       </Flex>

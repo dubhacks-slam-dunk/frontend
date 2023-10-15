@@ -7,18 +7,18 @@ import { useState } from 'react';
 export default function Groups() {
   const [showNewGroupForm, setShowNewGroupForm] = useState(false);
 
-  const createGroup = () => {
+  const openNewGroup = () => {
     setShowNewGroupForm(!showNewGroupForm);
   };
 
-  const closeCreateGroup = () => {
+  const closeNewGroup = () => {
     setShowNewGroupForm(false); // Function to close the CreateGroup component
   };
 
   return (
     <div className="font-dm">
       {showNewGroupForm ? (
-        <NewGroup onClose={closeCreateGroup} />
+        <NewGroup onClose={closeNewGroup} />
       ) : (
         <div>
           <Flex
@@ -30,7 +30,7 @@ export default function Groups() {
             <Text size="8" className="font-orelega">
               your groups
             </Text>
-            <Button onClick={createGroup}>new group</Button>
+            <Button onClick={openNewGroup}>new group</Button>
           </Flex>
           <Flex direction="column" gap="4" className="w-11/12 mx-auto">
             <GroupCard
