@@ -2,7 +2,17 @@ import CelebrateEntry from '@/types/CelebrateEntry';
 import GossipEntry from '@/types/GossipEntry';
 import MediaEntry from '@/types/MediaEntry';
 import PhotoEntry from '@/types/PhotoEntry';
-import { addDoc, arrayUnion, collection, doc, getDoc, updateDoc } from 'firebase/firestore';
+import {
+  addDoc,
+  arrayUnion,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  updateDoc,
+  where,
+} from 'firebase/firestore';
 import { db } from './firebase';
 
 const celebrateEntriesRef = collection(db, 'celebrateEntries');
@@ -103,6 +113,32 @@ export async function updateMediaEntry(content: string, type: string, editionId:
   } catch (e) {
     console.error('Error updating media entry:', e);
     throw e;
+  }
+}
+
+export async function getCelebrateEntriesByJoinCode(joinCode: any) {
+  try {
+    const groupsRef = collection(db, 'groups');
+
+    // Create a query with a condition (where clause)
+    const q = query(groupsRef, where('joinCode', '==', joinCode));
+
+    const querySnapshot = await getDocs(q);
+
+    if (querySnapshot.empty) {
+      throw new Error('No group found with the provided join code');
+    }
+
+    const groupDoc = querySnapshot.docs[0]; // Assuming joinCode is unique, so we take the first match
+    const groupData = groupDoc.data();
+
+    // Assuming celebrateEntries is a field in the group document
+    const celebrateEntries = groupData.celebrateEntries || [];
+
+    return celebrateEntries;
+  } catch (error) {
+    console.error('Error getting celebrate entries:', error);
+    throw error;
   }
 }
 

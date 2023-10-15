@@ -2,7 +2,7 @@ import EditionCard from '@/components/EditionCard';
 import UpdateForm from '@/components/UpdateForm';
 import User from '@/types/User';
 import { getEditionsByEditionId } from '@/utils/editions-helpers';
-import { getGroupById, getGroupByJoinCode } from '@/utils/groups-helpers';
+import { getGroupByJoinCode } from '@/utils/groups-helpers';
 import { ChevronLeftIcon } from '@radix-ui/react-icons';
 import { Avatar, Button, Flex, IconButton, Text } from '@radix-ui/themes';
 import Image from 'next/image';
@@ -14,6 +14,8 @@ export default function Group(props: any) {
   const { group: groupId } = router.query;
 
   const [group, setGroup] = useState<any>();
+  console.log(group);
+
   const [editions, setEditions] = useState<any>();
   const [showNewUpdateForm, setShowNewUpdateForm] = useState(false);
   const currentGroup: any = []; // THIS IS WRONG AND NEEDS TO BE REPLACED WITH DYNAMIC DATA
@@ -28,7 +30,9 @@ export default function Group(props: any) {
     setShowNewUpdateForm(false); // Function to close the CreateGroup component
   };
 
-  const closeGroup = () => {};
+  const closeGroup = () => {
+    router.push('/groups');
+  };
   // go to url/groups
 
   const LatestEdition = () => {
@@ -132,7 +136,7 @@ export default function Group(props: any) {
                   color="iris"
                   variant="soft"
                   onClick={() => {
-                    router.push(`/invite/${group}`);
+                    router.push(`/invite/${group.joinCode}`);
                   }}
                 >
                   invite
