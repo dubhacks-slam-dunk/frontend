@@ -6,8 +6,16 @@ const editionsRef = collection(db, 'editions');
 
 export async function addEdition(edition: Edition) {
   try {
-    const { title, publishDate, summary, thingsToCelebrate, media, images, gossipCorner, signOff } =
-      edition;
+    const {
+      title,
+      publishDate,
+      summary,
+      thingsToCelebrate,
+      media,
+      photoEntries,
+      gossipCorner,
+      signOff,
+    } = edition;
 
     const docRef = await addDoc(editionsRef, {
       title: title,
@@ -15,7 +23,7 @@ export async function addEdition(edition: Edition) {
       summary: summary,
       thingsToCelebrate: thingsToCelebrate,
       media: media,
-      images: images,
+      photoEntries: photoEntries,
       gossipCorner: gossipCorner,
       signOff: signOff,
     });
@@ -25,13 +33,3 @@ export async function addEdition(edition: Edition) {
     console.error('Error adding document: ', e);
   }
 }
-
-// export async function getAllEditionsByUserId(userId: string) {
-//   try {
-//     const snapshot = await getDocs(editionsRef);
-//     const editions = snapshot.docs.map(doc => doc.data());
-//     return editions.filter();
-//   } catch (e) {
-//     console.error('Error adding document: ', e);
-//   }
-// }
