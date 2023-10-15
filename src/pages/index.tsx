@@ -17,6 +17,9 @@ import { login, logout } from '../utils/auth';
 import UpdateForm from '@/components/UpdateForm';
 import Update from '@/group/updates/[update]';
 import EmptyHome from '@/components/EmptyHome';
+import InviteMembers from '@/components/InviteMembers';
+import EmptyGroup from '@/components/EmptyGroup';
+import LandingPage from '@/components/LandingPage';
 
 
 export default function Home() {
@@ -77,7 +80,10 @@ export default function Home() {
 
       {/* <UpdateForm></UpdateForm> */}
       {/* <Update></Update> */}
-      <EmptyHome></EmptyHome>
+      {/* <EmptyHome></EmptyHome> */}
+      {/* <InviteMembers></InviteMembers> */}
+      {/* <EmptyGroup></EmptyGroup> */}
+      <LandingPage></LandingPage>
     </>
   );
 }
