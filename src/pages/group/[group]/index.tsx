@@ -2,7 +2,7 @@ import EditionCard from '@/components/EditionCard';
 import UpdateForm from '@/components/UpdateForm';
 import User from '@/types/User';
 import { getEditionsByEditionId } from '@/utils/editions-helpers';
-import { getGroupById, getGroupByJoinCode } from '@/utils/groups-helpers';
+import { getGroupByJoinCode } from '@/utils/groups-helpers';
 import { ChevronLeftIcon } from '@radix-ui/react-icons';
 import { Avatar, Button, Flex, IconButton, Text } from '@radix-ui/themes';
 import Image from 'next/image';
@@ -28,7 +28,9 @@ export default function Group(props: any) {
     setShowNewUpdateForm(false); // Function to close the CreateGroup component
   };
 
-  const closeGroup = () => {};
+  const closeGroup = () => {
+    router.push('/groups');
+  };
   // go to url/groups
 
   const LatestEdition = () => {
