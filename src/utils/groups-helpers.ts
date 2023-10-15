@@ -35,7 +35,7 @@ export async function addGroup(group: Group, firstEdition: any) {
   }
 }
 
-export async function getGroupById(groupId: any) {
+export async function getGroupById(groupId: string) {
   try {
     const groupRef = doc(db, 'groups', groupId);
     const groupSnapshot = await getDoc(groupRef);
