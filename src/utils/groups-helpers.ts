@@ -35,6 +35,22 @@ export async function addGroup(group: Group, firstEdition: any) {
   }
 }
 
+export async function addSubsequentEdition(groupId: string, editionId: any) {
+  try {
+    const groupRef = doc(db, 'groups', groupId);
+
+    // Add the editionId to the list of editionIds in the specified group
+    await updateDoc(groupRef, {
+      editionIds: arrayUnion(editionId),
+    });
+
+    return true; // Indicate that the operation was successful
+  } catch (e) {
+    console.error('Error adding edition to group:', e);
+    throw e;
+  }
+}
+
 export async function addUserToGroup(joinCode: string, userId: string) {
   try {
     const groupsRef = collection(db, 'groups'); // Assuming 'groups' is the collection name

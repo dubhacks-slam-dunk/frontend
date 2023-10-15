@@ -1,4 +1,14 @@
-import { addDoc, collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
+import {
+  addDoc,
+  arrayUnion,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  updateDoc,
+  where,
+} from 'firebase/firestore';
 import { db } from './firebase';
 
 const usersRef = collection(db, 'users');
@@ -14,6 +24,22 @@ export async function addUser(userId: string, firstName: string, lastName: strin
     console.log('User Document written with ID: ', docRef.id);
   } catch (e) {
     console.error('Error adding document: ', e);
+  }
+}
+
+export async function addGroupToUser(groupId: any, userId: any) {
+  try {
+    const userRef = doc(db, 'users', userId);
+
+    // Add the groupId to the list of groups in the specified user
+    await updateDoc(userRef, {
+      groups: arrayUnion(groupId),
+    });
+
+    return true; // Indicate that the operation was successful
+  } catch (e) {
+    console.error('Error adding group to user:', e);
+    throw e;
   }
 }
 
