@@ -1,4 +1,6 @@
 import EditionCard from '@/components/EditionCard';
+import UpdateForm from '@/components/UpdateForm';
+import User from '@/types/User';
 import { getEditionsByEditionId } from '@/utils/editions-helpers';
 import { getGroupById } from '@/utils/groups-helpers';
 import { ChevronLeftIcon } from '@radix-ui/react-icons';
@@ -6,11 +8,11 @@ import { Avatar, Button, Flex, IconButton, Text } from '@radix-ui/themes';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import UpdateForm from '@/components/UpdateForm';
-import User from '@/types/User';
 
 export default function Group(props: any) {
   const router = useRouter();
+  const { group: groupId } = router.query;
+
   const [group, setGroup] = useState<any>();
   const [editions, setEditions] = useState<any>();
   const [showNewUpdateForm, setShowNewUpdateForm] = useState(false);
@@ -70,18 +72,18 @@ export default function Group(props: any) {
     );
   };
 
-  const { group: groupId } = router.query;
-
   useEffect(() => {
     const fetchGroup = async () => {
-      const groupData: any = await getGroupById(groupId);
+      const groupData: any = await getGroupById(groupId as string);
       const editionIds = groupData?.editions;
       const editionsData = await getEditionsByEditionId(editionIds);
       setEditions(editionsData);
 
       setGroup(groupData);
     };
-    fetchGroup();
+    if (groupId) {
+      fetchGroup();
+    }
   }, [groupId]);
 
   // const closeGroup = () => {
@@ -91,7 +93,7 @@ export default function Group(props: any) {
   return (
     <>
       {showNewUpdateForm ? (
-        <UpdateForm onClose={closeNewUpdate}></UpdateForm>
+        <UpdateForm onClose={closeNewUpdate} editionId={editions[editions.length - 1]}></UpdateForm>
       ) : (
         <div className="font-dm">
           <Flex direction="column" className="w-11/12 mx-auto mt-12 mb-12 gap-4">

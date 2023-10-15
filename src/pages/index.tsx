@@ -1,30 +1,22 @@
-import Navbar from '@/components/Navbar';
-import UpdateForm from '@/components/UpdateForm';
 import CelebrateEntry from '@/types/CelebrateEntry';
 import { Edition, EditionProps } from '@/types/Edition';
 import Editor from '@/types/Editor';
 import GossipEntry from '@/types/GossipEntry';
 import { Group, GroupProps } from '@/types/Group';
-import MediaEntry from '@/types/MediaEntry';
 import PhotoEntry from '@/types/PhotoEntry';
 import User from '@/types/User';
 import { addEdition } from '@/utils/editions-helpers';
-import {
-  addCelebrateEntry,
-  addGossipEntry,
-  addMediaEntry,
-  addPhotoEntry,
-} from '@/utils/entries-helper';
+import { addCelebrateEntry, addGossipEntry, addPhotoEntry } from '@/utils/entries-helper';
 import { addGroup, addSubsequentEdition } from '@/utils/groups-helpers';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth } from '../utils/firebase';
-import { login, logout } from '@/utils/auth';
+// import { login, logout } from '@/utils/auth';
 import HomeComponent from '@/components/HomeComponent';
+import { useAuth } from '@/utils/AuthContext';
 
 export default function Home() {
-  const [user, loading, error] = useAuthState(auth);
+  // const [user, loading, error] = useAuthState(auth);
+  const { currentUser: user, logout } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
@@ -34,16 +26,16 @@ export default function Home() {
       const newUser = new User('testId', 'test', 'test', []);
       const newEditor = new Editor('test', 'test');
       const newCelebrateEntry = new CelebrateEntry(newUser, 'test');
-      const newMediaEntry = new MediaEntry(newUser, 'test');
+      // const newMediaEntry = new MediaEntry(newUser, 'test');
       const newPhotoEntry = new PhotoEntry(newUser, 'test');
       const newGossipEntry = new GossipEntry(newUser, 'test');
 
       const addEntriesToFirebase = async () => {
         const celebrateEntryId = await addCelebrateEntry(newCelebrateEntry);
-        const mediaEntryId = await addMediaEntry(newMediaEntry);
+        // const mediaEntryId = await addMediaEntry(newMediaEntry);
         const photoEntryId = await addPhotoEntry(newPhotoEntry);
         const gossipEntryId = await addGossipEntry(newGossipEntry);
-        const entryIds = [celebrateEntryId, mediaEntryId, photoEntryId, gossipEntryId];
+        // const entryIds = [celebrateEntryId, mediaEntryId, photoEntryId, gossipEntryId];
       };
 
       // addEntriesToFirebase();
@@ -114,9 +106,7 @@ export default function Home() {
 
   return (
     <>
-      <button onClick={logout}>
-        Logout
-      </button>
+      <button onClick={logout}>Logout</button>
       {/* <Navbar isLoggedIn={!!user} userUid={user?.uid} /> */}
       <HomeComponent></HomeComponent>
     </>

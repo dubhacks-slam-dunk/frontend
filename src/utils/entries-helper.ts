@@ -2,7 +2,7 @@ import CelebrateEntry from '@/types/CelebrateEntry';
 import GossipEntry from '@/types/GossipEntry';
 import MediaEntry from '@/types/MediaEntry';
 import PhotoEntry from '@/types/PhotoEntry';
-import { addDoc, arrayUnion, collection, doc, updateDoc } from 'firebase/firestore';
+import { addDoc, arrayUnion, collection, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from './firebase';
 
 const celebrateEntriesRef = collection(db, 'celebrateEntries');
@@ -24,60 +24,143 @@ export async function addCelebrateEntry(celebrateEntry: CelebrateEntry) {
   }
 }
 
-export async function updatePhotoEntry(photoEntryID: any, editionId: any) {
+export async function updatePhotoEntry(photoEntryUrl: string, editionId: string) {
   try {
     const editionRef = doc(db, 'editions', editionId);
 
-    await updateDoc(editionRef, {
-      images: arrayUnion(photoEntryID),
-    });
+    // Check if photoEntryUrl exists in images
+    const editionSnapshot = await getDoc(editionRef);
+    const images = editionSnapshot.data()?.images || [];
 
-    return true; // Indicate that the operation was successful
+    if (!images.some((image: any) => image.url === photoEntryUrl)) {
+      // Photo entry with the same URL doesn't exist, create a new one
+      const photoEntryRef = await addDoc(collection(db, 'photoEntries'), {
+        url: photoEntryUrl, // Set the URL for the new photo entry
+        // Add other properties for photoEntry
+      });
+
+      // Get the id of the newly created photoEntry
+      const newPhotoEntryId = photoEntryRef.id;
+
+      // Add the newPhotoEntryId to images in the specified edition
+      await updateDoc(editionRef, {
+        images: arrayUnion({ id: newPhotoEntryId, url: photoEntryUrl }), // Store id and url
+      });
+
+      return newPhotoEntryId; // Return the id of the newly created photoEntry
+    }
+
+    // If photo entry with the same URL exists, return its id
+    const existingPhotoEntry = images.find((image: any) => image.url === photoEntryUrl);
+    return existingPhotoEntry?.id;
   } catch (e) {
-    console.error('Error updating celebrate entry:', e);
+    console.error('Error updating photo entry:', e);
     throw e;
   }
 }
 
-export async function updateMediaEntry(mediaEntryId: any, editionId: any) {
+export async function updateMediaEntry(content: string, type: string, editionId: string) {
   try {
     const editionRef = doc(db, 'editions', editionId);
 
-    await updateDoc(editionRef, {
-      media: arrayUnion(mediaEntryId),
-    });
+    // Check if media entry with the same content and type exists
+    const editionSnapshot = await getDoc(editionRef);
+    const media = editionSnapshot.data()?.media || [];
 
-    return true; // Indicate that the operation was successful
+    if (!media.some((entry: any) => entry.content === content && entry.type === type)) {
+      // Media entry with the same content and type doesn't exist, create a new one
+      const mediaEntryRef = await addDoc(collection(db, 'mediaEntries'), {
+        content: content,
+        type: type,
+        // Add other properties for mediaEntry
+      });
+
+      // Get the id of the newly created mediaEntry
+      const newMediaEntryId = mediaEntryRef.id;
+
+      // Add the newMediaEntryId to media in the specified edition
+      await updateDoc(editionRef, {
+        media: arrayUnion({ id: newMediaEntryId, content: content, type: type }), // Store id, content, and type
+      });
+
+      return newMediaEntryId; // Return the id of the newly created mediaEntry
+    }
+
+    // If media entry with the same content and type exists, return its id
+    const existingMediaEntry = media.find(
+      (entry: any) => entry.content === content && entry.type === type
+    );
+    return existingMediaEntry?.id;
   } catch (e) {
-    console.error('Error updating celebrate entry:', e);
+    console.error('Error updating media entry:', e);
     throw e;
   }
 }
-export async function updateGossipEntry(gossipEntryId: any, editionId: any) {
+
+export async function updateGossipEntry(content: string, editionId: string) {
   try {
     const editionRef = doc(db, 'editions', editionId);
 
-    await updateDoc(editionRef, {
-      gossipCorner: arrayUnion(gossipEntryId),
-    });
+    // Check if gossip entry with the same content exists
+    const editionSnapshot = await getDoc(editionRef);
+    const gossip = editionSnapshot.data()?.gossipCorner || [];
 
-    return true; // Indicate that the operation was successful
+    if (!gossip.some((entry: any) => entry.content === content)) {
+      // Gossip entry with the same content doesn't exist, create a new one
+      const gossipEntryRef = await addDoc(collection(db, 'gossipEntries'), {
+        content: content,
+        // Add other properties for gossipEntry
+      });
+
+      // Get the id of the newly created gossipEntry
+      const newGossipEntryId = gossipEntryRef.id;
+
+      // Add the newGossipEntryId to gossipCorner in the specified edition
+      await updateDoc(editionRef, {
+        gossipCorner: arrayUnion({ id: newGossipEntryId, content: content }), // Store id and content
+      });
+
+      return newGossipEntryId; // Return the id of the newly created gossipEntry
+    }
+
+    // If gossip entry with the same content exists, return its id
+    const existingGossipEntry = gossip.find((entry: any) => entry.content === content);
+    return existingGossipEntry?.id;
   } catch (e) {
-    console.error('Error updating celebrate entry:', e);
+    console.error('Error updating gossip entry:', e);
     throw e;
   }
 }
 
-export async function updateCelebrateEntry(celebrateEntryId: any, editionId: any) {
+export async function updateCelebrateEntry(content: string, editionId: string) {
   try {
     const editionRef = doc(db, 'editions', editionId);
 
-    // Add the celebrateEntryId to the list of thingsToCelebrate in the specified edition
-    await updateDoc(editionRef, {
-      thingsToCelebrate: arrayUnion(celebrateEntryId),
-    });
+    // Check if celebration entry with the same content exists
+    const editionSnapshot = await getDoc(editionRef);
+    const celebrations = editionSnapshot.data()?.thingsToCelebrate || [];
 
-    return true; // Indicate that the operation was successful
+    if (!celebrations.some((entry: any) => entry.content === content)) {
+      // Celebration entry with the same content doesn't exist, create a new one
+      const celebrateEntryRef = await addDoc(collection(db, 'celebrateEntries'), {
+        content: content,
+        // Add other properties for celebrateEntry
+      });
+
+      // Get the id of the newly created celebrateEntry
+      const newCelebrateEntryId = celebrateEntryRef.id;
+
+      // Add the newCelebrateEntryId to thingsToCelebrate in the specified edition
+      await updateDoc(editionRef, {
+        thingsToCelebrate: arrayUnion({ id: newCelebrateEntryId, content: content }), // Store id and content
+      });
+
+      return newCelebrateEntryId; // Return the id of the newly created celebrateEntry
+    }
+
+    // If celebration entry with the same content exists, return its id
+    const existingCelebrateEntry = celebrations.find((entry: any) => entry.content === content);
+    return existingCelebrateEntry?.id;
   } catch (e) {
     console.error('Error updating celebrate entry:', e);
     throw e;
@@ -86,10 +169,11 @@ export async function updateCelebrateEntry(celebrateEntryId: any, editionId: any
 
 export async function addMediaEntry(mediaEntry: MediaEntry) {
   try {
-    const { user, entry } = mediaEntry;
+    const { user, entry, type } = mediaEntry;
     const docRef = await addDoc(mediaEntriesRef, {
       userId: user.getId(),
       entry: entry,
+      type: type,
     });
     console.log('MediaEntry Document written with ID: ', docRef.id);
     return docRef.id;
