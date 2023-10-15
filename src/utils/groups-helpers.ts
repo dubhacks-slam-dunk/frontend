@@ -35,7 +35,26 @@ export async function addGroup(group: Group, firstEdition: any) {
   }
 }
 
-export async function getGroupById(groupId: any) {
+export async function getGroupIdByEditionId(editionId: string) {
+  try {
+    // Create a query to find the document containing the specified editionId
+    const q = query(collection(db, 'groups'), where('editions', 'array-contains', editionId));
+    const querySnapshot = await getDocs(q);
+
+    if (!querySnapshot.empty) {
+      // If there is a matching document, get the groupId
+      const groupId = querySnapshot.docs[0].id;
+      return groupId;
+    } else {
+      return null; // No matching document found
+    }
+  } catch (error) {
+    console.error('Error fetching groupId by editionId:', error);
+    throw error;
+  }
+}
+
+export async function getGroupById(groupId: string) {
   try {
     const groupRef = doc(db, 'groups', groupId);
     const groupSnapshot = await getDoc(groupRef);
