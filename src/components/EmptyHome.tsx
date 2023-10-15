@@ -19,7 +19,7 @@ export default function EmptyHome(props: any) {
                 </Flex>
                 <Flex className="flex-col">
                     <Text>
-                        nothing's here yet.
+                        nothing&apos;s here yet.
                     </Text>
                     <Text>
                         join or create your first group!
