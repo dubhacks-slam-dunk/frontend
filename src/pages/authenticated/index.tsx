@@ -1,5 +1,7 @@
 import Navbar from '@/components/Navbar';
 import { auth } from '@/utils/firebase';
+import { getAllGroupsById } from '@/utils/groups-helpers';
+import { getGroupIdsFromUser, getUserIdFromUid } from '@/utils/users-helpers';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -11,6 +13,16 @@ const HomePage: React.FC = () => {
   useEffect(() => {
     if (!user) {
       router.push('/');
+    } else {
+      const getInitialGroupsData = async () => {
+        const userId = await getUserIdFromUid(user!.uid);
+
+        const groupsIds = await getGroupIdsFromUser(userId);
+        const groupData = await getAllGroupsById(groupsIds);
+        console.log('🚀 ~ file: index.tsx:22 ~ getInitialGroupsData ~ groupData :', groupData);
+      };
+
+      getInitialGroupsData();
     }
   }, [router, user]);
 
