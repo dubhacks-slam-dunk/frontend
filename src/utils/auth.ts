@@ -9,7 +9,7 @@ export const googleAuth = new GoogleAuthProvider();
 
 export const login = async () => {
   try {
-    const result = await signInWithPopup(auth, googleAuth);
+    const result: any = await signInWithPopup(auth, googleAuth);
     return result;
   } catch (error) {
     const firebaseError = error as FirebaseError;

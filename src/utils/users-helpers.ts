@@ -1,18 +1,24 @@
-import User from '@/types/User';
-import { addDoc, collection } from 'firebase/firestore';
+import { addDoc, collection, getDocs } from 'firebase/firestore';
 import { db } from './firebase';
 
 const usersRef = collection(db, 'users');
 
-export async function addUser(user: User) {
+export async function addUser(userId: string, firstName: string, lastName: string) {
   try {
-    const { name, groups } = user;
     const docRef = await addDoc(usersRef, {
-      name: name,
-      groups: groups,
+      uid: userId,
+      firstName: firstName,
+      lastName: lastName,
+      groups: [],
     });
     console.log('User Document written with ID: ', docRef.id);
   } catch (e) {
     console.error('Error adding document: ', e);
   }
+}
+
+export async function isUserIdAlreadyExists(userId: string) {
+  const snapshot = await getDocs(usersRef);
+  const userIds = snapshot.docs.map(doc => doc.id);
+  return userIds.includes(userId);
 }

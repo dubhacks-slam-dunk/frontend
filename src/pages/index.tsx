@@ -9,17 +9,22 @@ import PhotoEntry from '@/types/PhotoEntry';
 import User from '@/types/User';
 import { addEdition } from '@/utils/editions-helpers';
 import { addGroup } from '@/utils/groups-helpers';
+import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../utils/firebase';
 
 export default function Home() {
   const [user, loading, error] = useAuthState(auth);
+  const router = useRouter();
 
   console.log(user);
 
   useEffect(() => {
-    const newUser = new User('testId', 'test', []);
+    if (user) {
+      router.push('/authenticated');
+    }
+    const newUser = new User('testId', 'test', 'test', []);
     const newEditor = new Editor('test', 'test');
     const newCelebrateEntry = new CelebrateEntry(newUser, 'test');
     const newMediaEntry = new MediaEntry(newUser, 'test');
