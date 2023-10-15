@@ -1,16 +1,12 @@
 import Image from 'next/image';
 import { Flex, Text, Button } from '@radix-ui/themes';
 import { useState } from 'react';
-// import { login } from '@/utils/auth';
 import { addUser, getUserIdFromUid, isUserIdAlreadyExists } from '@/utils/users-helpers';
-import { useAuthState } from 'react-firebase-hooks/auth';
 import { useRouter } from 'next/router';
-import { auth } from '@/utils/firebase';
 import { useAuth } from '@/utils/AuthContext';
 
 export default function Auth() {
   const [isButtonClicked, setIsButtonClicked] = useState(false);
-  // const [user, loading, error] = useAuthState(auth);
   const { currentUser: user, login } = useAuth();
   const router = useRouter();
 
@@ -37,7 +33,7 @@ export default function Auth() {
   return (
     <Flex className="bg-[#DADCFF] min-h-screen" direction="column" justify="center" align="center">
       <Flex direction="column" justify="center" align="center" gap="2">
-        <Image src="/images/logo.png" alt="logo" width="150" height="150" />
+        <Image src="/images/friendition-logo.png" alt="logo" width="150" height="150" />
         <Text size="8" className="font-orelega" style={{ color: '#5B5BD6' }}>
           frienditions
         </Text>
@@ -50,7 +46,7 @@ export default function Auth() {
           mt="9"
           onClick={handleClick}
         >
-          <Image src="/images/google.svg" alt="google" width="25" height="25" />
+          <Image src="/images/google-logo.svg" alt="google" width="25" height="25" />
           Sign In With Google
         </Button>
       </Flex>
