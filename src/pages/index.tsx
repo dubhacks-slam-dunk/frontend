@@ -23,6 +23,10 @@ import { login, logout } from '../utils/auth';
 import UpdateForm from '@/components/UpdateForm';
 import Update from '@/pages/group/updates/[update]';
 import EmptyHome from '@/components/EmptyHome';
+import InviteMembers from '@/components/InviteMembers';
+import EmptyGroup from '@/components/EmptyGroup';
+import LandingPage from '@/components/LandingPage';
+
 
 export default function Home() {
   const [user, loading, error] = useAuthState(auth);
