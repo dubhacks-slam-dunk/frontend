@@ -18,7 +18,6 @@ import UpdateForm from '@/components/UpdateForm';
 import Update from '@/group/updates/[update]';
 import EmptyHome from '@/components/EmptyHome';
 
-
 export default function Home() {
   const [user, loading, error] = useAuthState(auth);
   const router = useRouter();
@@ -75,9 +74,9 @@ export default function Home() {
       {/* <h1 className="font-dm">expawdition</h1>
       <h1 className="font-orelega">frienditions</h1> */}
 
-      {/* <UpdateForm></UpdateForm> */}
+      <UpdateForm></UpdateForm>
       {/* <Update></Update> */}
-      <EmptyHome></EmptyHome>
+      {/* <EmptyHome></EmptyHome> */}
     </>
   );
 }
