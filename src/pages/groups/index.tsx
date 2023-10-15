@@ -1,5 +1,6 @@
 import CreateGroup from '@/components/CreateGroup';
 import GroupCard from '@/components/GroupCard';
+import NewGroup from '@/components/NewGroup';
 import { Flex, Text, Button } from '@radix-ui/themes';
 import { useState } from 'react';
 
@@ -9,10 +10,15 @@ export default function Groups() {
   const createGroup = () => {
     setShowNewGroupForm(!showNewGroupForm);
   };
+
+  const closeCreateGroup = () => {
+    setShowNewGroupForm(false); // Function to close the CreateGroup component
+  };
+
   return (
     <div className="font-dm">
       {showNewGroupForm ? (
-        <CreateGroup />
+        <NewGroup onClose={closeCreateGroup} />
       ) : (
         <div>
           <Flex
@@ -21,7 +27,7 @@ export default function Groups() {
             align="center"
             className="w-11/12 mx-auto mt-12 mb-4"
           >
-            <Text size="6" className="font-orelega">
+            <Text size="8" className="font-orelega">
               your groups
             </Text>
             <Button onClick={createGroup}>new group</Button>

@@ -12,8 +12,8 @@ export default function GroupCard(props: any) {
           width="500"
           height="10"
         ></Image>
-        <Text>group name</Text>
-        <Text>last updated {props.date}</Text>
+        <Text className="font-dm">group name</Text>
+        <Text className="font-orelega">last updated {props.date}</Text>
       </Flex>
     </div>
   );
