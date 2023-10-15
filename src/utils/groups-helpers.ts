@@ -1,23 +1,45 @@
 import { Group } from '@/types/Group';
-import { addDoc, collection, doc, getDoc } from 'firebase/firestore';
+import { addDoc, arrayUnion, collection, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from './firebase';
 
 const groupsRef = collection(db, 'groups');
 
 export async function addGroup(group: Group) {
   try {
-    const { name, image, joinCode, users, editor, edition } = group;
+    const { name, image, users, editor, editions } = group;
+    const userIds = users.map(user => user.getId());
+    console.log(userIds);
     const docRef = await addDoc(groupsRef, {
       name: name,
       image: image,
-      joinCode: joinCode,
-      users: users,
+      users: userIds,
       editor: editor,
-      edition: edition,
+      editions: editions,
     });
+
     console.log('Group Document written with ID: ', docRef.id);
+    return docRef.id;
   } catch (e) {
     console.error('Error adding document: ', e);
+  }
+}
+
+export async function addUserToGroup(joinCode: string, userId: string) {
+  try {
+    const groupRef = doc(db, 'groups', joinCode);
+    const groupSnapshot = await getDoc(groupRef);
+
+    if (groupSnapshot.exists()) {
+      const updatedUsersList = arrayUnion(userId);
+      await updateDoc(groupRef, { users: updatedUsersList });
+
+      return true; // Indicate that the operation was successful
+    } else {
+      throw new Error('Group with provided joinCode does not exist');
+    }
+  } catch (e) {
+    console.error('Error adding user to group:', e);
+    throw e;
   }
 }
 
