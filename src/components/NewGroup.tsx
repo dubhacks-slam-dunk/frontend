@@ -8,6 +8,10 @@ export default function NewGroup(props: any) {
   const openCreateGroup = () => {
     setShowCreateGroupForm(true);
   };
+
+  const closeCreateGroup = () => {
+    setShowCreateGroupForm(false);
+  };
   const closeForm = () => {
     // Close the form and call the onClose function
     props.onClose();
