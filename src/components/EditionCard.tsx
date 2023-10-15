@@ -1,5 +1,6 @@
 import { Flex, Text, AspectRatio } from '@radix-ui/themes';
 import Image from 'next/image';
+import PhotoEntry from '@/types/PhotoEntry';
 
 export default function EditionCard(props: any) {
   return (
@@ -8,13 +9,17 @@ export default function EditionCard(props: any) {
         <Text>{props.date}</Text>
         <Text>{props.title}</Text>
         <Flex direction="row">
-          <Image
-            className="rounded-md"
-            src={props.image}
-            alt={props.name}
-            width="500"
-            height="10"
-          ></Image>
+          {props.photoentrylist &&
+            props.photoentrylist.map((entry: PhotoEntry, index: number) => (
+              <Image
+                key={index} // Remember to add a unique key for each mapped element
+                className="rounded-md"
+                src={entry.entry}
+                alt={entry.user.firstName + "'s photo"}
+                width={500}
+                height={10}
+              />
+            ))}
         </Flex>
       </Flex>
     </div>
