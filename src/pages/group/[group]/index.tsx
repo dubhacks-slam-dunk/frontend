@@ -3,8 +3,11 @@ import { Flex, Text, IconButton, Button, TextField, Avatar } from '@radix-ui/the
 import { ChevronLeftIcon } from '@radix-ui/react-icons';
 import Image from 'next/image';
 import EditionCard from '@/components/EditionCard';
+import User from '@/types/User';
+// import Group from '@/types/Group';
 
 export default function Group(props: any) {
+  const group: any = []; // THIS IS WRONG AND NEEDS TO BE REPLACED WITH DYNAMIC DATA
   const closeGroup = () => {};
   // go to url/groups
   return (
@@ -20,17 +23,20 @@ export default function Group(props: any) {
         </Flex>
         <Image
           className="rounded-md"
-          src="/images/expawdition.png" // replace with dynamic data
-          alt={props.name} // replace with dynamic data
+          src="/images/expawdition.png" // {group.image} replace with dynamic data
+          alt="" // {group.name} replace with dynamic data
           width="500"
           height="10"
         ></Image>
         <Flex direction="row" gap="2">
-          <Avatar
-            src="https://images.unsplash.com/photo-1502823403499-6ccfcf4fb453?&w=256&h=256&q=70&crop=focalpoint&fp-x=0.5&fp-y=0.3&fp-z=1&fit=crop"
-            fallback="A"
-          />
-          <Avatar fallback="A" />
+          {group.users &&
+            group.users.map((user: User, index: number) => (
+              <Avatar
+                key={index}
+                // src={user.image ? user.image : "A"} // user's google profile photo !!!
+                fallback="A"
+              />
+            ))}
         </Flex>
         <Button>invite</Button>
         <Button>Write my update</Button>
