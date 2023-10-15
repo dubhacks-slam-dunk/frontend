@@ -1,10 +1,16 @@
 import { Flex, Text } from '@radix-ui/themes';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 
 export default function GroupCard(props: any) {
+  const router = useRouter();
+  const handleGroupCardClick = () => {
+    router.push(`../group/${props.id}`);
+  };
+
   return (
     <div>
-      <Flex direction="column" className=" mx-auto">
+      <Flex direction="column" className=" mx-auto" onClick={() => handleGroupCardClick()}>
         {props.image && (
           <Image
             className="rounded-md"
@@ -15,7 +21,7 @@ export default function GroupCard(props: any) {
           ></Image>
         )}
         <Text className="font-dm">{props.name}</Text>
-        <Text className="font-orelega">Last Updated: {props.date}</Text>
+        <Text className="font-orelega">last updated {props.date}</Text>
       </Flex>
     </div>
   );

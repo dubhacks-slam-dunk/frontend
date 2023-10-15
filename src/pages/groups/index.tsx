@@ -18,6 +18,8 @@ export default function Groups() {
       const groupIds = await getGroupIdsFromUser(userId);
       console.log('🚀 ~ file: index.tsx:15 ~ getAllUserGroupsFromFirebase ~ groupIds:', groupIds);
       const groupsData = await getAllGroupsById(groupIds);
+      console.log(groupsData);
+
       setGroups(groupsData);
     };
 
@@ -34,9 +36,10 @@ export default function Groups() {
 
   const groupCards = groups?.map((data: any, index: number) => (
     <GroupCard
-      key={index} // Make sure to include a unique key when mapping React components
-      name={data.name}
-      image={data.image}
+      id={data.id}
+      key={`${data.id}-${index}`} // Make sure to include a unique key when mapping React components
+      name={data.data.name}
+      image={data.data.image}
       date={'No editions created yet!'}
     />
   ));
