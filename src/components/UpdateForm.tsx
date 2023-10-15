@@ -38,7 +38,7 @@ export default function UpdateForm(props: any) {
   return (
     <div>
       <Flex direction="column" className="w-11/12 mx-auto space-y-5 mt-12 mb-12">
-        <Flex direction="row" align="start">
+        <Flex direction="row" align="center">
           <IconButton onClick={closeForm} variant="ghost">
             <ChevronLeftIcon width="35" height="35" />
           </IconButton>
