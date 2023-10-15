@@ -7,23 +7,12 @@ export default function Home() {
   const [user, loading, error] = useAuthState(auth);
 
   useEffect(() => {
-    console.log(user);
+    // do something if the user changes
   }, [user]);
 
   return (
     <>
       <div>Hello world</div>
-      {user ? (
-        <>
-          <div>You&apos;re logged in as: {user.displayName}</div>
-          <button onClick={logout}>LOGOUT</button>
-        </>
-      ) : (
-        <>
-          <div>You&apos;re not logged in.</div>
-          <button onClick={login}>LOGIN</button>
-        </>
-      )}
     </>
   );
 }
