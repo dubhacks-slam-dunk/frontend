@@ -1,5 +1,5 @@
+import { GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth';
 import { auth } from './firebase';
-import { signInWithPopup, signOut, GoogleAuthProvider } from 'firebase/auth';
 
 interface FirebaseError extends Error {
   code: string;
@@ -9,7 +9,7 @@ export const googleAuth = new GoogleAuthProvider();
 
 export const login = async () => {
   try {
-    const result = await signInWithPopup(auth, googleAuth);
+    const result: any = await signInWithPopup(auth, googleAuth);
     return result;
   } catch (error) {
     const firebaseError = error as FirebaseError;
@@ -26,8 +26,8 @@ export const login = async () => {
 export const logout = async () => {
   try {
     await signOut(auth);
-    console.log("Successfully logged out");
+    console.log('Successfully logged out');
   } catch (error) {
-    console.error("An error occurred while logging out:", error);
+    console.error('An error occurred while logging out:', error);
   }
 };
