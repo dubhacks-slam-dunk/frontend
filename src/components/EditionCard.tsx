@@ -12,7 +12,7 @@ export default function EditionCard(props: any) {
           {props.photoentrylist &&
             props.photoentrylist.map((entry: PhotoEntry, index: number) => (
               <Image
-                key={index} // Remember to add a unique key for each mapped element
+                key={index}
                 className="rounded-md"
                 src={entry.entry}
                 alt={entry.user.firstName + "'s photo"}

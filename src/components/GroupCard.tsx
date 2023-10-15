@@ -1,4 +1,4 @@
-import { Flex, Text, AspectRatio } from '@radix-ui/themes';
+import { Flex, Text } from '@radix-ui/themes';
 import Image from 'next/image';
 
 export default function GroupCard(props: any) {
