@@ -2,6 +2,7 @@ import { Flex, Text } from '@radix-ui/themes';
 import Image from 'next/image';
 
 export default function EditionCard(props: any) {
+  console.log(props.photoentrylist);
   return (
     <div>
       <Flex direction="column" className="mx-auto">

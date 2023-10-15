@@ -5,6 +5,7 @@ import { ChevronLeftIcon } from '@radix-ui/react-icons';
 import { Button, Flex, IconButton, Text, TextArea, TextField } from '@radix-ui/themes';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { updatePhotoEntry } from '@/utils/entries-helper';
 
 export default function UpdateForm(props: any) {
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -18,7 +19,7 @@ export default function UpdateForm(props: any) {
 
   const closeForm = () => {
     // Close the form and call the onClose function
-    props.onClose();
+    router.back();
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -41,7 +42,7 @@ export default function UpdateForm(props: any) {
       if (imageFile) {
         const imageUrl = await uploadImage(imageFile);
         console.log(imageUrl.toString());
-        // updatePhotoEntry(editionId, encodeURIComponent(imageUrl));
+        await updatePhotoEntry(encodeURIComponent(imageUrl), editionId);
       }
 
       if (winContent) {
