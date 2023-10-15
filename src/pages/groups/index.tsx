@@ -1,11 +1,24 @@
-import CreateGroup from '@/components/CreateGroup';
 import GroupCard from '@/components/GroupCard';
 import NewGroup from '@/components/NewGroup';
-import { Flex, Text, Button } from '@radix-ui/themes';
-import { useState } from 'react';
+import { getAllGroupsById } from '@/utils/groups-helpers';
+import { getGroupIdsFromUser } from '@/utils/users-helpers';
+import { Button, Flex, Text } from '@radix-ui/themes';
+import { useEffect, useState } from 'react';
+
+const userId = 'ch6pkblCra5J8YIBM58R';
 
 export default function Groups() {
   const [showNewGroupForm, setShowNewGroupForm] = useState(false);
+  const [groups, setGroups] = useState<any>();
+
+  useEffect(() => {
+    const getAllUserGroupsFromFirebase = async () => {
+      const groupIds = await getGroupIdsFromUser(userId);
+      console.log('🚀 ~ file: index.tsx:15 ~ getAllUserGroupsFromFirebase ~ groupIds:', groupIds);
+      const groupsData = await getAllGroupsById(groupIds);
+      setGroups(groupsData);
+    };
+  }, []);
 
   const openNewGroup = () => {
     setShowNewGroupForm(!showNewGroupForm);
