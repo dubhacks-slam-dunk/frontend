@@ -1,7 +1,7 @@
+import Navbar from '@/components/Navbar';
 import { useEffect } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../utils/firebase';
-import { login, logout } from '../utils/auth';
 
 export default function Home() {
   const [user, loading, error] = useAuthState(auth);
@@ -12,6 +12,7 @@ export default function Home() {
 
   return (
     <>
+      <Navbar isLoggedIn={!!user} />
       <div>Hello world</div>
     </>
   );
