@@ -57,7 +57,7 @@ export default function Group(props: any) {
 
   useEffect(() => {
     const fetchGroup = async () => {
-      const groupData = await getGroupById(groupId);
+      const groupData: any = await getGroupById(groupId);
       const editionIds = groupData?.editions;
       const editionsData = await getEditionsByEditionId(editionIds);
       setEditions(editionsData);
