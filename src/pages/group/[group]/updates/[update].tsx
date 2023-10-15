@@ -85,9 +85,6 @@ export default function Update(props: any) {
               celebratelist.map((entry: CelebrateEntry, index: number) => (
                 <UpdateEntryCard key={index} user={entry.user} entry={entry.entry} />
               ))}
-            <UpdateEntryCard />
-            <UpdateEntryCard />
-            <UpdateEntryCard />
             <EditorCard
               summary="taryn got played too many times" // DYNAMIC DATA
             ></EditorCard>
@@ -154,9 +151,6 @@ export default function Update(props: any) {
               gossiplist.map((entry: GossipEntry, index: number) => (
                 <UpdateEntryCard key={index} user={entry.user} entry={entry.entry} />
               ))}
-            <UpdateEntryCard />
-            <UpdateEntryCard />
-            <UpdateEntryCard />
           </Flex>
           <EditorCard
             summary="thoughts on the tea" // DYNAMIC DATA
