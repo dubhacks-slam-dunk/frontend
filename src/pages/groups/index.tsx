@@ -5,6 +5,7 @@ import { getGroupIdsFromUser } from '@/utils/users-helpers';
 import { Button, Flex, Text } from '@radix-ui/themes';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import BottomNavbar from '@/components/BottomNavbar';
 
 const userId = 'ch6pkblCra5J8YIBM58R';
 
@@ -45,7 +46,7 @@ export default function Groups() {
   ));
 
   return (
-    <div className="font-dm">
+    <div className="font-dm pb-20">
       {showNewGroupForm ? (
         <NewGroup onCloseNewGroupForm={closeNewGroup} />
       ) : (
@@ -66,6 +67,7 @@ export default function Groups() {
           </Flex>{' '}
         </div>
       )}
+      <BottomNavbar />
     </div>
   );
 }
