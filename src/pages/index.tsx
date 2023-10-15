@@ -36,16 +36,6 @@ export default function Home() {
       const newMediaEntry = new MediaEntry(newUser, 'test');
       const newPhotoEntry = new PhotoEntry(newUser, 'test');
       const newGossipEntry = new GossipEntry(newUser, 'test');
-      const editionProps = {
-        title: 'test',
-        publishDate: new Date(),
-        summary: 'test',
-        thingsToCelebrate: [newCelebrateEntry],
-        media: [newMediaEntry],
-        images: [newPhotoEntry],
-        gossipCorner: [newGossipEntry],
-      };
-      const newEdition = new Edition(editionProps as EditionProps);
 
       const addEntriesToFirebase = async () => {
         const celebrateEntryId = await addCelebrateEntry(newCelebrateEntry);
@@ -56,12 +46,6 @@ export default function Home() {
       };
 
       // addEntriesToFirebase();
-
-      const addEditionToFirebase = async () => {
-        await addEdition(newEdition);
-      };
-
-      // addEditionToFirebase();
 
       const generateRandomCode = () => {
         const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -75,19 +59,32 @@ export default function Home() {
         return code;
       };
 
+      const editionProps = {
+        title: 'test',
+        publishDate: new Date(),
+        summary: 'test',
+        thingsToCelebrate: [],
+        media: [],
+        images: [],
+        gossipCorner: [],
+        signOff: 'test',
+      };
+      const newEdition = new Edition(editionProps as EditionProps);
+
       const newGroupProps = {
         name: 'test',
         image: 'test',
         joinCode: generateRandomCode(),
         users: [newUser],
         editor: 'ai-personality-name', // to be hardcoded as consts
-        editions: [],
+        editions: [newEdition],
       };
 
       const newGroup = new Group(newGroupProps as GroupProps);
 
       const addGroupToFirebase = async () => {
-        const joinCode = await addGroup(newGroup);
+        const editionId = await addEdition(newEdition);
+        const joinCode = await addGroup(newGroup, editionId);
         console.log('🚀 ~ file: index.tsx:78 ~ addGroupToFirebase ~ joinCode:', joinCode);
       };
 

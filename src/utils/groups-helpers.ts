@@ -14,9 +14,9 @@ import { db } from './firebase';
 
 const groupsRef = collection(db, 'groups');
 
-export async function addGroup(group: Group) {
+export async function addGroup(group: Group, firstEdition: any) {
   try {
-    const { name, image, joinCode, users, editor, editions } = group;
+    const { name, image, joinCode, users, editor } = group;
     const userIds = users.map(user => user.getId());
     console.log(userIds);
     const docRef = await addDoc(groupsRef, {
@@ -25,7 +25,7 @@ export async function addGroup(group: Group) {
       joinCode: joinCode,
       users: userIds,
       editor: editor,
-      editions: editions,
+      editions: [firstEdition],
     });
 
     console.log('Group Document written with ID: ', docRef.id);
