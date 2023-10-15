@@ -12,13 +12,15 @@ export default function GroupCard(props: any) {
     <div>
       <Flex direction="column" className=" mx-auto" onClick={() => handleGroupCardClick()}>
         {props.image && (
-          <Image
-            className="rounded-md"
-            src={props.image}
-            alt={props.name}
-            width="500"
-            height="10"
-          ></Image>
+          <div style={{ maxHeight: '200px', overflow: 'hidden' }}>
+            <Image
+              className="rounded-md"
+              src={props.image}
+              alt={props.name}
+              width="400"
+              height="10"
+            ></Image>
+          </div>
         )}
         <Text className="font-dm">{props.name}</Text>
         <Text className="font-orelega">last updated {props.date}</Text>
