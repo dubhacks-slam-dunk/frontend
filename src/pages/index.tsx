@@ -21,7 +21,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../utils/firebase';
 import { login, logout } from '../utils/auth';
 import UpdateForm from '@/components/UpdateForm';
-import Update from '@/pages/group/updates/[update]';
+import Update from '@/pages/group/[group]/updates/[update]';
 import EmptyHome from '@/components/EmptyHome';
 
 export default function Home() {
