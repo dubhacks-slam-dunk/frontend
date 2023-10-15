@@ -14,8 +14,7 @@ import {
   addMediaEntry,
   addPhotoEntry,
 } from '@/utils/entries-helper';
-import { addGroup, addUserToGroup } from '@/utils/groups-helpers';
-import { getUserIdFromUid } from '@/utils/users-helpers';
+import { addGroup } from '@/utils/groups-helpers';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -64,9 +63,22 @@ export default function Home() {
 
       // addEditionToFirebase();
 
+      const generateRandomCode = () => {
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        let code = '';
+
+        for (let i = 0; i < 4; i++) {
+          const randomIndex = Math.floor(Math.random() * characters.length);
+          code += characters[randomIndex];
+        }
+
+        return code;
+      };
+
       const newGroupProps = {
         name: 'test',
         image: 'test',
+        joinCode: generateRandomCode(),
         users: [newUser],
         editor: 'ai-personality-name', // to be hardcoded as consts
         editions: [],

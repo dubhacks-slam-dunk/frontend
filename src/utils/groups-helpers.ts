@@ -1,17 +1,28 @@
 import { Group } from '@/types/Group';
-import { addDoc, arrayUnion, collection, doc, getDoc, updateDoc } from 'firebase/firestore';
+import {
+  addDoc,
+  arrayUnion,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  updateDoc,
+  where,
+} from 'firebase/firestore';
 import { db } from './firebase';
 
 const groupsRef = collection(db, 'groups');
 
 export async function addGroup(group: Group) {
   try {
-    const { name, image, users, editor, editions } = group;
+    const { name, image, joinCode, users, editor, editions } = group;
     const userIds = users.map(user => user.getId());
     console.log(userIds);
     const docRef = await addDoc(groupsRef, {
       name: name,
       image: image,
+      joinCode: joinCode,
       users: userIds,
       editor: editor,
       editions: editions,
@@ -26,12 +37,13 @@ export async function addGroup(group: Group) {
 
 export async function addUserToGroup(joinCode: string, userId: string) {
   try {
-    const groupRef = doc(db, 'groups', joinCode);
-    const groupSnapshot = await getDoc(groupRef);
+    const groupsRef = collection(db, 'groups'); // Assuming 'groups' is the collection name
+    const querySnapshot = await getDocs(query(groupsRef, where('joinCode', '==', joinCode)));
 
-    if (groupSnapshot.exists()) {
+    if (!querySnapshot.empty) {
+      const groupDoc = querySnapshot.docs[0];
       const updatedUsersList = arrayUnion(userId);
-      await updateDoc(groupRef, { users: updatedUsersList });
+      await updateDoc(groupDoc.ref, { users: updatedUsersList });
 
       return true; // Indicate that the operation was successful
     } else {

@@ -25,7 +25,7 @@ const HomePage: React.FC = () => {
       getInitialGroupsData();
 
       const joinGroupOnFirebase = async () => {
-        const joinCode = 'krRGjj7YiNq6jfdFUpyP'; // temp
+        const joinCode = 'HDAR'; // temp
         const userId = await getUserIdFromUid(user!.uid);
         addUserToGroup(joinCode, userId);
       };
