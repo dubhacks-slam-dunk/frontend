@@ -7,6 +7,7 @@ import { Group, GroupProps } from '@/types/Group';
 import MediaEntry from '@/types/MediaEntry';
 import PhotoEntry from '@/types/PhotoEntry';
 import User from '@/types/User';
+import { addEdition } from '@/utils/editions-helpers';
 import { addGroup } from '@/utils/groups-helpers';
 import { useEffect } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -14,8 +15,11 @@ import { auth } from '../utils/firebase';
 
 export default function Home() {
   const [user, loading, error] = useAuthState(auth);
+
+  console.log(user);
+
   useEffect(() => {
-    const newUser = new User('test', []);
+    const newUser = new User('testId', 'test', []);
     const newEditor = new Editor('test', 'test');
     const newCelebrateEntry = new CelebrateEntry(newUser, 'test');
     const newMediaEntry = new MediaEntry(newUser, 'test');
@@ -31,6 +35,12 @@ export default function Home() {
       gossipCorner: [newGossipEntry],
     };
     const newEdition = new Edition(editionProps as EditionProps);
+
+    const addEditionToFirebase = async () => {
+      await addEdition(newEdition);
+    };
+
+    addEditionToFirebase();
 
     const newGroupProps = {
       name: 'test',

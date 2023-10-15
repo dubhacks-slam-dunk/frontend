@@ -8,6 +8,9 @@ export async function addEdition(edition: Edition) {
   try {
     const { title, publishDate, summary, thingsToCelebrate, media, images, gossipCorner, signOff } =
       edition;
+
+    console.log(thingsToCelebrate);
+
     const docRef = await addDoc(editionsRef, {
       title: title,
       publishDate: publishDate,
