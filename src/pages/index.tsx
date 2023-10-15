@@ -20,6 +20,7 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../utils/firebase';
+import HomeComponent from '@/components/HomeComponent';
 
 export default function Home() {
   const [user, loading, error] = useAuthState(auth);
@@ -114,12 +115,8 @@ export default function Home() {
 
   return (
     <>
-      {/* <h1 className="font-dm">expawdition</h1>
-      <h1 className="font-orelega">frienditions</h1> */}
-      <Navbar isLoggedIn={!!user} userUid={user?.uid} />
-      <UpdateForm></UpdateForm>
-      {/* <Update></Update> */}
-      {/* <EmptyHome></EmptyHome> */}
+      {/* <Navbar isLoggedIn={!!user} userUid={user?.uid} /> */}
+      <HomeComponent></HomeComponent>
     </>
   );
 }
