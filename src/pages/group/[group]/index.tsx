@@ -120,7 +120,7 @@ export default function Group(props: any) {
                     currentGroup.users.map((user: User, index: number) => (
                       <Avatar
                         key={index}
-                        // src={user.image ? user.image : "A"} // user's google profile photo !!!
+                        // src={user.photo ? user.photo : 'A'} // user's google profile photo !!!
                         fallback="A"
                       />
                     ))}
