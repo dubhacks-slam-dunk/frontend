@@ -1,4 +1,4 @@
-import { Flex, Text, Box, IconButton } from '@radix-ui/themes';
+import { Flex, Text, TextField, IconButton, Button } from '@radix-ui/themes';
 import Image from 'next/image';
 import { ChevronLeftIcon } from '@radix-ui/react-icons';
 
@@ -8,8 +8,9 @@ export default function CreateGroup(props: any) {
     props.onClose();
   };
   return (
-    <div className="font-dm w-11/12 mx-aut">
-      <Flex direction="column" className="w-11/12 mx-auto">
+    <div className="font-dm w-11/12 mx-auto">
+      {/* <Flex */}
+      <Flex direction="column" className="mx-auto">
         <Flex direction="row" align="start" className="mt-12">
           <IconButton onClick={closeForm} variant="ghost">
             <ChevronLeftIcon width="35" height="35" />
@@ -19,13 +20,14 @@ export default function CreateGroup(props: any) {
           </Text>
         </Flex>
         <Flex
+          className="m-1"
           direction="column"
           style={{
             color: '#5B5BD6',
             borderBlockColor: '#5B5BD6',
             borderBlockStyle: 'dashed',
             borderBlockWidth: 2,
-            borderRadius: 8,
+            borderRadius: 4,
             padding: 20,
           }}
         >
@@ -33,7 +35,17 @@ export default function CreateGroup(props: any) {
         </Flex>
 
         <Text>name this group</Text>
-        <Text>last updated {props.date}</Text>
+        <TextField.Root className="mt-2 mb-2">
+          <TextField.Slot></TextField.Slot>
+          <TextField.Input className="m-1 mx-2" placeholder="group name" />
+        </TextField.Root>
+        <Text>how often do you want updates?</Text>
+        <Text>pick an editor</Text>
+        <Text>
+          the editor is your newsletter’s unique voice! they’ll give a summary of all the highlights
+          at the start of every issue.
+        </Text>
+        <Button style={{ backgroundColor: '#5B5BD6' }}>Create group</Button>
       </Flex>
     </div>
   );
