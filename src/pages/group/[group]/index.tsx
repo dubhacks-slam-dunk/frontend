@@ -1,13 +1,76 @@
 import EditionCard from '@/components/EditionCard';
+import { getEditionsByEditionId } from '@/utils/editions-helpers';
 import { getGroupById } from '@/utils/groups-helpers';
 import { ChevronLeftIcon } from '@radix-ui/react-icons';
 import { Avatar, Button, Flex, IconButton, Text } from '@radix-ui/themes';
 import Image from 'next/image';
-import EditionCard from '@/components/EditionCard';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 
 export default function Group(props: any) {
-  const closeGroup = () => {};
-  // go to url/groups
+  const router = useRouter();
+  const [group, setGroup] = useState<any>();
+  const [editions, setEditions] = useState<any>();
+
+  const LatestEdition = () => {
+    const latestEdition = editions?.reduce((latest, edition) => {
+      return edition.publishDate > latest.publishDate ? edition : latest;
+    }, editions[0]);
+
+    return (
+      <div>
+        <Text>latest edition</Text>
+        {latestEdition && (
+          <EditionCard
+            date={latestEdition.publishDate.toDate().toString()}
+            title={latestEdition.title}
+            photoentrylist={latestEdition.images}
+          />
+        )}
+      </div>
+    );
+  };
+
+  const ArchiveEditions = () => {
+    const latestEdition = editions?.reduce((latest: any, edition: any) => {
+      return edition.publishDate > latest.publishDate ? edition : latest;
+    }, editions[0]);
+
+    const otherEditions = editions?.filter((edition: any) => edition.id !== latestEdition?.id);
+
+    return (
+      <div>
+        <Text>archives</Text>
+        {otherEditions?.map((edition: any) => (
+          <EditionCard
+            key={edition.id}
+            date={edition.publishDate.toDate().toString()}
+            title={edition.title}
+            photoentrylist={edition.images}
+          />
+        ))}
+      </div>
+    );
+  };
+
+  const { group: groupId } = router.query;
+
+  useEffect(() => {
+    const fetchGroup = async () => {
+      const groupData = await getGroupById(groupId);
+      const editionIds = groupData?.editions;
+      const editionsData = await getEditionsByEditionId(editionIds);
+      setEditions(editionsData);
+
+      setGroup(groupData);
+    };
+    fetchGroup();
+  }, [groupId]);
+
+  const closeGroup = () => {
+    router.push({ pathname: '../groups' });
+  };
+
   return (
     <div className="font-dm">
       <Flex direction="column" className="w-11/12 mx-auto">
@@ -16,13 +79,13 @@ export default function Group(props: any) {
             <ChevronLeftIcon width="35" height="35" />
           </IconButton>
           <Text size="8" className="font-orelega" style={{ color: '#5B5BD6' }}>
-            [group name]
+            {group?.name}
           </Text>
         </Flex>
         <Image
           className="rounded-md"
-          src="/images/expawdition.png" // replace with dynamic data
-          alt={props.name} // replace with dynamic data
+          src={group?.image} // replace with dynamic data
+          alt={group?.name} // replace with dynamic data
           width="500"
           height="10"
         ></Image>
@@ -35,13 +98,8 @@ export default function Group(props: any) {
         </Flex>
         <Button>invite</Button>
         <Button>Write my update</Button>
-        <Text>latest edition</Text>
-        <EditionCard
-          date="" // date of edition
-          title="" // title of edition
-          photoentrylist="" // list of photo entries
-        ></EditionCard>
-        <Text>archives</Text>
+        <LatestEdition />
+        <ArchiveEditions />
       </Flex>
     </div>
   );
