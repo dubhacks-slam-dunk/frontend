@@ -1,4 +1,5 @@
 // Import the functions you need from the SDKs you need
+import Group from '@/types/Group';
 import { initializeApp } from 'firebase/app';
 import { addDoc, collection, getFirestore } from 'firebase/firestore';
 import { getAuth } from "firebase/auth";
@@ -22,15 +23,23 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 export const auth = getAuth();
 
+const usersRef = collection(db, 'users');
+const groupsRef = collection(db, 'groups');
+const editionsRef = collection(db, 'editions');
+
 // write all data modifying functions here
-export async function addData() {
+export async function addGroup(group: Group) {
   try {
-    const docRef = await addDoc(collection(db, 'users'), {
-      first: 'Ada',
-      last: 'Lovelace',
-      born: 1815,
+    const { name, image, joinCode, users, editor, edition } = group;
+    const docRef = await addDoc(groupsRef, {
+      name: name,
+      image: image,
+      joinCode: joinCode,
+      users: users,
+      editor: editor,
+      edition: edition,
     });
-    console.log('Document written with ID: ', docRef.id);
+    console.log('Group Document written with ID: ', docRef.id);
   } catch (e) {
     console.error('Error adding document: ', e);
   }
