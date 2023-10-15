@@ -1,26 +1,27 @@
 import Image from 'next/image';
 import { Flex, Text, Button } from '@radix-ui/themes';
 import { useState } from 'react';
-import { login } from '@/utils/auth';
+// import { login } from '@/utils/auth';
 import { addUser, getUserIdFromUid, isUserIdAlreadyExists } from '@/utils/users-helpers';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useRouter } from 'next/router';
 import { auth } from '@/utils/firebase';
+import { useAuth } from '@/utils/AuthContext';
 
 export default function Auth() {
   const [isButtonClicked, setIsButtonClicked] = useState(false);
-  const [user, loading, error] = useAuthState(auth);
+  // const [user, loading, error] = useAuthState(auth);
+  const { currentUser: user, login } = useAuth();
   const router = useRouter();
 
   const handleClick = () => {
     setIsButtonClicked(!isButtonClicked);
     handleLogin();
   }
-
+  
   const handleLogin = async () => {
     const result = await login();
-    console.log(user);
-    const userId = await getUserIdFromUid(user!.uid);
+    const userId = await getUserIdFromUid(result.user.uid);
     const isUserExists = await isUserIdAlreadyExists(userId);
 
     if (!isUserExists) {

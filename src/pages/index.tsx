@@ -20,11 +20,13 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../utils/firebase';
-import { login, logout } from '@/utils/auth';
+// import { login, logout } from '@/utils/auth';
 import HomeComponent from '@/components/HomeComponent';
+import { useAuth } from '@/utils/AuthContext';
 
 export default function Home() {
-  const [user, loading, error] = useAuthState(auth);
+  // const [user, loading, error] = useAuthState(auth);
+  const { currentUser: user, logout } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
