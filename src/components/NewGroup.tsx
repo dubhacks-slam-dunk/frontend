@@ -1,6 +1,5 @@
-// import { iris9 } from '@radix-ui/colors';
 import { useState } from 'react';
-import { Flex, Text, AspectRatio, IconButton, Button, TextField } from '@radix-ui/themes';
+import { Flex, Text, IconButton, Button, TextField } from '@radix-ui/themes';
 import { ChevronLeftIcon } from '@radix-ui/react-icons';
 import CreateGroup from './CreateGroup';
 
@@ -14,13 +13,12 @@ export default function NewGroup(props: any) {
     setShowCreateGroupForm(false);
   };
   const closeForm = () => {
-    // Close the form and call the onClose function
-    props.onClose();
+    props.onCloseNewGroupForm();
   };
   return (
     <div className="font-dm">
       {showCreateGroupForm ? (
-        <CreateGroup onClose={closeCreateGroup} />
+        <CreateGroup onCloseCreateGroupForm={closeCreateGroup} />
       ) : (
         <div className="font-dm">
           <Flex direction="column" className="w-11/12 mx-auto">

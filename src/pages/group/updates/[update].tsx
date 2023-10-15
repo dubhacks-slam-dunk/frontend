@@ -134,7 +134,7 @@ export default function Update(props: any) {
         </Flex>
 
         <Flex className="flex-col space-y-4">
-            <Text>what's the tea?</Text>
+            <Text>what&apos;s the tea?</Text>
             <Flex className="flex-col space-y-3">
                 <Flex className="flex-row space-x-3 items-center">
                     <Avatar radius="full" fallback="A" />
@@ -163,7 +163,7 @@ export default function Update(props: any) {
         </Flex>
 
         <Flex className="flex-col space-y-4">
-            <Text>that's all, folks!</Text>
+            <Text>that&apos;s all, folks!</Text>
             <Text>Thanks for reading this update. Looking forward to the next issue!</Text>
         </Flex>
 
