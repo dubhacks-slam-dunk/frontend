@@ -48,7 +48,7 @@ export default function UpdateForm(props: any) {
         </Flex>
 
         <Flex className="flex-col space-y-2">
-          <Text>it's your turn to give an update!</Text>
+          <Text>it&apos;s your turn to give an update!</Text>
           <Text>
             answer each of the following prompts to be featured in your next group update.
           </Text>
@@ -56,13 +56,13 @@ export default function UpdateForm(props: any) {
 
         <Flex className="flex-col space-y-2">
           <Text>1. things to celebrate</Text>
-          <Text>name a small victory or a major win that you'd like to share!</Text>
+          <Text>name a small victory or a major win that you&apos;d like to share!</Text>
           <TextArea size="2" placeholder="your response here"></TextArea>
         </Flex>
 
         <Flex className="flex-col space-y-2">
           <Text>2. a recent interest</Text>
-          <Text>tell us what's your most recent media binge. </Text>
+          <Text>tell us what&apos;s your most recent media binge. </Text>
           <Select.Root>
             <Select.Trigger placeholder="select..." />
             <Select.Content>

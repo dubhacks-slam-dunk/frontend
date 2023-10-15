@@ -1,5 +1,4 @@
 import { Edition } from './Edition';
-import Editor from './Editor';
 import User from './User';
 
 export interface GroupProps {
@@ -7,8 +6,8 @@ export interface GroupProps {
   image: string;
   joinCode: string;
   users: User[];
-  editor: Editor;
-  edition: Edition;
+  editor: string;
+  editions: Edition[];
 }
 
 export class Group {
@@ -16,16 +15,37 @@ export class Group {
   image: string;
   joinCode: string;
   users: User[];
-  editor: Editor;
-  edition: Edition;
+  editor: string;
+  editions: Edition[];
 
   constructor(groupProps: GroupProps) {
-    const { name, image, joinCode, users, editor, edition } = groupProps;
+    const { name, image, joinCode, users, editor, editions } = groupProps;
     this.name = name;
     this.image = image;
     this.joinCode = joinCode;
     this.users = users;
     this.editor = editor;
-    this.edition = edition;
+    this.editions = editions;
   }
+
+  public getUsers = () => {
+    return this.users;
+  };
+  public getImage = () => {
+    return this.image;
+  };
+
+  public getJoinCode = () => {
+    return this.joinCode;
+  };
+
+  public getName = () => {
+    return this.name;
+  };
+  public getEditor = () => {
+    return this.editor;
+  };
+  public getEditions = () => {
+    return this.editions;
+  };
 }

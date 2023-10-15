@@ -1,6 +1,6 @@
 import Navbar from '@/components/Navbar';
 import { auth } from '@/utils/firebase';
-import { getAllGroupsById } from '@/utils/groups-helpers';
+import { addUserToGroup, getAllGroupsById } from '@/utils/groups-helpers';
 import { getGroupIdsFromUser, getUserIdFromUid } from '@/utils/users-helpers';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
@@ -23,6 +23,16 @@ const HomePage: React.FC = () => {
       };
 
       getInitialGroupsData();
+
+      const joinGroupOnFirebase = async () => {
+        const joinCode = 'HDAR'; // temp
+        const userId = await getUserIdFromUid(user!.uid);
+        addUserToGroup(joinCode, userId);
+      };
+
+      // joinGroupOnFirebase();
+
+      // updateEditionWithEntry x 4
     }
   }, [router, user]);
 
