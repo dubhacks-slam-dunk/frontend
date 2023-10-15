@@ -14,6 +14,8 @@ export default function Group(props: any) {
   const { group: groupId } = router.query;
 
   const [group, setGroup] = useState<any>();
+  console.log(group);
+
   const [editions, setEditions] = useState<any>();
   const [showNewUpdateForm, setShowNewUpdateForm] = useState(false);
   const currentGroup: any = []; // THIS IS WRONG AND NEEDS TO BE REPLACED WITH DYNAMIC DATA
@@ -134,7 +136,7 @@ export default function Group(props: any) {
                   color="iris"
                   variant="soft"
                   onClick={() => {
-                    router.push(`/invite/${group}`);
+                    router.push(`/invite/${group.joinCode}`);
                   }}
                 >
                   invite

@@ -34,6 +34,22 @@ export async function addEdition(edition: Edition) {
   }
 }
 
+export async function getEditionById(editionId: string) {
+  try {
+    const editionRef = doc(db, 'editions', editionId);
+    const editionSnapshot = await getDoc(editionRef);
+
+    if (editionSnapshot.exists()) {
+      return { id: editionId, ...editionSnapshot.data() };
+    } else {
+      throw new Error(`Edition with ID ${editionId} does not exist`);
+    }
+  } catch (e) {
+    console.error('Error getting edition by ID:', e);
+    throw e;
+  }
+}
+
 export async function getEditionsByEditionId(editionIds: any) {
   try {
     const editionData = [];

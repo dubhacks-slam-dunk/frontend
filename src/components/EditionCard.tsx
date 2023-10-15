@@ -23,7 +23,7 @@ export default function EditionCard(props: any) {
                 key={index}
                 className="rounded-md"
                 // src={encodeURIComponent(entry.url)}
-                src="/images/expawdition.png"
+                src="https://firebasestorage.googleapis.com/v0/b/friendition-d7dde.appspot.com/o/images%2FIMG_2988%201.png?alt=media&token=3d002792-b265-4d13-915e-0324522b1593"
                 alt={'photo'}
                 width={500}
                 height={10}

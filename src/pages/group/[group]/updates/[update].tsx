@@ -1,32 +1,49 @@
-import { Flex, Grid, Text, Button, IconButton, Avatar } from '@radix-ui/themes';
-import {
-  ChevronLeftIcon,
-  StarIcon,
-  ReaderIcon,
-  SpeakerModerateIcon,
-  DesktopIcon,
-} from '@radix-ui/react-icons';
-import Image from 'next/image';
-import CelebrateEntry from '@/types/CelebrateEntry';
-import UpdateEntryCard from '@/components/UpdateEntryCard';
 import EditorCard from '@/components/EditorCard';
+import UpdateEntryCard from '@/components/UpdateEntryCard';
+import CelebrateEntry from '@/types/CelebrateEntry';
 import GossipEntry from '@/types/GossipEntry';
-import MediaEntry from '@/types/MediaEntry';
-import PhotoEntry from '@/types/PhotoEntry';
+import { getEditionById } from '@/utils/editions-helpers';
+import { getGroupByJoinCode } from '@/utils/groups-helpers';
+import { ChevronLeftIcon } from '@radix-ui/react-icons';
+import { Button, Flex, Grid, IconButton, Text } from '@radix-ui/themes';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
-import MediaRating from '@/components/MediaRating';
+import { useEffect, useState } from 'react';
 
 export default function Update(props: any) {
+  const [group, setGroup] = useState<any>();
+  const [celebratelist, setCelebrateList] = useState<any>([]);
+  const [gossiplist, setGossipList] = useState<any>([]);
+  const [medialist, setMediaList] = useState<any>([]);
+  const [photolist, setPhotoList] = useState<any>([]);
+
   const router = useRouter();
-  const celebratelist: CelebrateEntry[] = []; // THIS NEEDS TO CONNECT TO DATA
-  const gossiplist: GossipEntry[] = []; // THIS NEEDS TO CONNECT TO DATA
-  const medialist: MediaEntry[] = []; // THIS NEEDS TO CONNECT TO DATA
-  const photolist: PhotoEntry[] = []; // THIS NEEDS TO CONNECT TO DATA
-  const gptTitle: string = 'AI Title'; // THIS NEEDS TO CONNECT TO DATA
-  const gptSummary: string = '2-3 sentences go here'; // THIS NEEDS TO CONNECT TO DATA
-  const gptCelebrateSummary: string = 'editor opinion on things to celebrate'; // THIS NEEDS TO CONNECT TO DATA
-  const gptMediaSummary: string = 'editor opinion on media'; // THIS NEEDS TO CONNECT TO DATA
-  const gptTeaSummary: string = 'editor opinion on tea'; // THIS NEEDS TO CONNECT TO DATA
+  const { group: groupId, update: updateId } = router.query;
+
+  useEffect(() => {
+    const fetchGroup = async () => {
+      const group: any = await getGroupByJoinCode(groupId as string);
+      const editionId = group?.editions[0];
+
+      const edition: any = await getEditionById(editionId);
+      console.log(edition);
+      setPhotoList(edition.images);
+
+      setGroup(group);
+    };
+
+    fetchGroup();
+  }, []);
+
+  // const celebratelist: CelebrateEntry[] = []; // THIS NEEDS TO CONNECT TO DATA
+  // const gossiplist: GossipEntry[] = []; // THIS NEEDS TO CONNECT TO DATA
+  // const medialist: MediaEntry[] = []; // THIS NEEDS TO CONNECT TO DATA
+  // const photolist: PhotoEntry[] = []; // THIS NEEDS TO CONNECT TO DATA
+  const gptTitle: string = 'DubHacks Weekend!'; // THIS NEEDS TO CONNECT TO DATA
+  const gptSummary: string = `What a week! Alex snagged some shuteye while the team hustled, Taryn's tech-tribe crushed code, and Melvin had a pizza party for one. The rumor mill buzzed: Alex's snooze-fest, Taryn's boy blunder, and Melvin's bowling betrayal. They found solace in work watch, doc dives, and melody masks.`; // THIS NEEDS TO CONNECT TO DATA
+  const gptCelebrateSummary: string = `Friends, this week, Alex slammed a crucial home run in the Sleep League! After a nerve-wracking, sleepless inning, she's finally notched up some zees! Her monumental pillow touchdown marks an unparalleled slumber triumph! Victory snooze bells are ringing!`; // THIS NEEDS TO CONNECT TO DATA
+  const gptMediaSummary: string = `And here's Melvin, folks, blocking out the noise like a pro! He's tuned into his personal symphony, using the music to push past the cacophony. This is auditory defense at its finest, folks!`; // THIS NEEDS TO CONNECT TO DATA
+  const gptTeaSummary: string = `In an unforeseen twist, Taryn faces yet another matchup against the notorious Boy Brigade! An unexpected play leaves scores unsettled. Will Taryn learn the opponent's strategies or will she be blindsided, yet again? Stay tuned, sports fans!`; // THIS NEEDS TO CONNECT TO DATA
   const gptGoodbye: string = 'editor goodbye'; // THIS NEEDS TO CONNECT TO DATA
   const issuePic: string = ''; // THIS NEEDS TO CONNECT TO DATA
   const issueNo: string = '1'; // THIS NEEDS TO CONNECT TO DATA
@@ -166,12 +183,14 @@ export default function Update(props: any) {
           </Text>
           <Grid columns="2">
             {photolist &&
-              photolist.map((entry: PhotoEntry, index: number) => (
+              photolist.map((entry: any, index: number) => (
                 <Image
                   key={index}
                   className="rounded-md"
-                  src={entry.entry}
-                  alt={entry.user.firstName}
+                  src={
+                    'https://firebasestorage.googleapis.com/v0/b/friendition-d7dde.appspot.com/o/images%2FIMG_3963%201.png?alt=media&token=7ee6e7bc-742b-4d83-b815-965557e9bd8f'
+                  }
+                  alt={'photo'}
                   width="500"
                   height="10"
                 ></Image>
@@ -202,7 +221,9 @@ export default function Update(props: any) {
           <Text>{gptGoodbye}</Text>
         </Flex>
 
-        <Button style={{ backgroundColor: '#5B5BD6' }}>Done</Button>
+        <Button onClick={goBack} style={{ backgroundColor: '#5B5BD6' }}>
+          Done
+        </Button>
       </Flex>
     </div>
   );
