@@ -5,11 +5,10 @@ import { ChevronLeftIcon } from '@radix-ui/react-icons';
 export default function CreateGroup(props: any) {
   const closeForm = () => {
     // Close the form and call the onClose function
-    props.onClose();
+    props.onCloseCreateGroupForm();
   };
   return (
     <div className="font-dm w-11/12 mx-auto">
-      {/* <Flex */}
       <Flex direction="column" className="mx-auto">
         <Flex direction="row" align="start" className="mt-12">
           <IconButton onClick={closeForm} variant="ghost">
@@ -31,7 +30,10 @@ export default function CreateGroup(props: any) {
             padding: 20,
           }}
         >
-          <input type="file"></input>
+          <label className="px-4 py-2 flex items-center justify-center">
+            Add a Photo
+            <input type="file" className="hidden" />
+          </label>
         </Flex>
 
         <Text>name this group</Text>
@@ -40,6 +42,11 @@ export default function CreateGroup(props: any) {
           <TextField.Input className="m-1 mx-2" placeholder="group name" />
         </TextField.Root>
         <Text>how often do you want updates?</Text>
+        <Flex direction="row" justify="between">
+          <Button style={{ backgroundColor: '#5B5BD6' }}>Every week</Button>
+          <Button variant="outline">Every two weeks</Button>
+          <Button variant="outline">Every month</Button>
+        </Flex>
         <Text>pick an editor</Text>
         <Text>
           the editor is your newsletter’s unique voice! they’ll give a summary of all the highlights

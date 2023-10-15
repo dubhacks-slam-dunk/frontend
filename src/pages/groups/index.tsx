@@ -18,7 +18,7 @@ export default function Groups() {
   return (
     <div className="font-dm">
       {showNewGroupForm ? (
-        <NewGroup onClose={closeNewGroup} />
+        <NewGroup onCloseNewGroupForm={closeNewGroup} />
       ) : (
         <div>
           <Flex

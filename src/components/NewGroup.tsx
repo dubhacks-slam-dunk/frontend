@@ -15,12 +15,12 @@ export default function NewGroup(props: any) {
   };
   const closeForm = () => {
     // Close the form and call the onClose function
-    props.onClose();
+    props.onCloseNewGroupForm();
   };
   return (
     <div className="font-dm">
       {showCreateGroupForm ? (
-        <CreateGroup onClose={closeCreateGroup} />
+        <CreateGroup onCloseCreateGroupForm={closeCreateGroup} />
       ) : (
         <div className="font-dm">
           <Flex direction="column" className="w-11/12 mx-auto">
