@@ -7,7 +7,7 @@ import { Group, GroupProps } from '@/types/Group';
 import MediaEntry from '@/types/MediaEntry';
 import PhotoEntry from '@/types/PhotoEntry';
 import User from '@/types/User';
-import { addGroup } from '@/utils/firebase';
+import { addGroup } from '@/utils/groups-helpers';
 import { useEffect } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../utils/firebase';
